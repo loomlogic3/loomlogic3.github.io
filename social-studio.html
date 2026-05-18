@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Loom Logic Social Studio</title>
+    <meta
+      name="description"
+      content="Private-facing Loom Logic social content studio for safe draft creation and review."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="studio-body">
+    <header class="site-header">
+      <a class="brand-lockup" href="./index.html" aria-label="Loom Logic home">
+        <img src="./assets/loom-logic-icon.png" alt="Loom Logic logo" />
+        <span>Loom Logic</span>
+      </a>
+      <nav aria-label="Studio navigation">
+        <a href="./index.html">Public Site</a>
+        <a href="#draft">Draft</a>
+        <a href="#guardrails">Guardrails</a>
+      </nav>
+    </header>
+
+    <main class="studio-shell">
+      <section class="studio-hero">
+        <span class="eyebrow">Private Workspace</span>
+        <h1>Loom Logic Social Studio</h1>
+        <p>
+          Draft safe, professional social posts for Loom Logic accounts. This tool does not follow,
+          like, DM, scrape, auto-post, control bots, or connect to any social platform.
+        </p>
+      </section>
+
+      <section id="draft" class="studio-layout">
+        <form class="studio-panel studio-form" data-social-form>
+          <div class="form-field">
+            <label for="social-account">Account voice</label>
+            <select id="social-account" name="account">
+              <option value="business">Loom Logic business - @loomlogic3</option>
+              <option value="founder">Founder personal - @oromitayo12</option>
+              <option value="indigo">IndigoArtHub creative platform</option>
+              <option value="legacy">Legacy system update</option>
+              <option value="v2">V2 safety-first update</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="social-platform">Platform</label>
+            <select id="social-platform" name="platform">
+              <option>X</option>
+              <option>LinkedIn</option>
+              <option>Instagram</option>
+              <option>Facebook</option>
+              <option>Threads</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="social-goal">Post goal</label>
+            <select id="social-goal" name="goal">
+              <option>Build trust</option>
+              <option>Explain a service</option>
+              <option>Share a product update</option>
+              <option>Invite project inquiries</option>
+              <option>Educate without hype</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="social-tone">Tone</label>
+            <select id="social-tone" name="tone">
+              <option>Professional and clear</option>
+              <option>Founder-led and thoughtful</option>
+              <option>Concise and direct</option>
+              <option>Warm and client-friendly</option>
+              <option>Technical but readable</option>
+            </select>
+          </div>
+
+          <div class="form-field form-field-wide">
+            <label for="social-topic">Topic</label>
+            <input
+              id="social-topic"
+              name="topic"
+              type="text"
+              placeholder="Example: why Loom Logic separates public websites from internal V2 controls"
+              required
+            />
+          </div>
+
+          <div class="form-field form-field-wide">
+            <label for="social-notes">Notes</label>
+            <textarea
+              id="social-notes"
+              name="notes"
+              rows="5"
+              placeholder="Add details, links, client audience, launch context, or wording you want included."
+            ></textarea>
+          </div>
+
+          <div class="studio-actions">
+            <button class="primary-action" type="submit">Generate Safe Drafts</button>
+            <button class="secondary-action" type="button" data-clear-social>Clear</button>
+          </div>
+        </form>
+
+        <aside id="guardrails" class="studio-panel studio-guardrails">
+          <span class="eyebrow">Safety Rules</span>
+          <h2>Human approval first.</h2>
+          <div class="guardrail-list">
+            <span>No auto-follow</span>
+            <span>No mass DMs</span>
+            <span>No engagement spam</span>
+            <span>No profit promises</span>
+            <span>No financial advice</span>
+            <span>No private keys or secrets</span>
+          </div>
+          <p>
+            Use this studio to draft and review. Post manually until official API publishing and
+            approval gates are built.
+          </p>
+        </aside>
+      </section>
+
+      <section class="studio-results" data-social-results hidden>
+        <div class="section-head">
+          <span class="eyebrow">Draft Set</span>
+          <h2>Review before posting.</h2>
+          <p data-social-summary></p>
+        </div>
+
+        <div class="draft-grid" data-draft-grid></div>
+      </section>
+    </main>
+
+    <script src="./social-studio.js" defer></script>
+  </body>
+</html>
