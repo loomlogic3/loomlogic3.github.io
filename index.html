@@ -20,6 +20,7 @@
         <a href="#services">Services</a>
         <a href="#systems">Systems</a>
         <a href="#trust">Trust</a>
+        <a href="#inquiry">Inquiry</a>
         <a href="#contact">Contact</a>
       </nav>
     </header>
@@ -132,42 +133,176 @@
         </div>
       </section>
 
+      <section id="inquiry" class="inquiry-section">
+        <div class="section-head">
+          <span class="eyebrow">Project Inquiry</span>
+          <h2>Start with a clear project brief.</h2>
+          <p>
+            Share the type of system you want to build, the stage you are in, and the outcome you
+            need. Loom Logic will use this to understand the right first step.
+          </p>
+        </div>
+
+        <div class="inquiry-layout">
+          <form class="inquiry-form" data-inquiry-form>
+            <div class="form-field">
+              <label for="inquiry-name">Name</label>
+              <input id="inquiry-name" name="name" type="text" autocomplete="name" required />
+            </div>
+
+            <div class="form-field">
+              <label for="inquiry-email">Email</label>
+              <input id="inquiry-email" name="email" type="email" autocomplete="email" required />
+            </div>
+
+            <div class="form-field">
+              <label for="inquiry-type">Project type</label>
+              <select id="inquiry-type" name="projectType" required>
+                <option value="">Select one</option>
+                <option>Professional business website</option>
+                <option>Automation dashboard</option>
+                <option>Client intake system</option>
+                <option>Product prototype</option>
+                <option>Web3 monitoring tool</option>
+                <option>Launch-ready content workflow</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="inquiry-budget">Budget range</label>
+              <select id="inquiry-budget" name="budget">
+                <option value="">Not sure yet</option>
+                <option>Starter scope</option>
+                <option>Small business build</option>
+                <option>Advanced system build</option>
+                <option>Ongoing product support</option>
+              </select>
+            </div>
+
+            <div class="form-field form-field-wide">
+              <label for="inquiry-message">What should Loom Logic know?</label>
+              <textarea
+                id="inquiry-message"
+                name="message"
+                rows="5"
+                placeholder="Tell us what you want built, what problem it should solve, and when you want to launch."
+                required
+              ></textarea>
+            </div>
+
+            <button class="primary-action inquiry-submit" type="submit">Prepare Inquiry Email</button>
+            <p class="form-note" data-inquiry-status>
+              Opens your email app with a prepared message. No financial advice or trading execution.
+            </p>
+          </form>
+
+          <aside class="inquiry-card" aria-label="Loom Logic delivery process">
+            <span class="eyebrow">How It Starts</span>
+            <ol>
+              <li>
+                <strong>Scope the need</strong>
+                <p>Clarify the audience, workflow, risk level, and success criteria.</p>
+              </li>
+              <li>
+                <strong>Design the control layer</strong>
+                <p>Define boundaries, review points, and safe operating behavior first.</p>
+              </li>
+              <li>
+                <strong>Build the usable system</strong>
+                <p>Ship the website, dashboard, prototype, or workflow in client-ready form.</p>
+              </li>
+            </ol>
+          </aside>
+        </div>
+      </section>
+
       <section id="contact" class="contact-section">
-        <div>
+        <div class="contact-copy">
           <span class="eyebrow">Contact</span>
           <h2>Bring Loom Logic into the conversation.</h2>
           <p>
             Use this site as the clean professional front door while V2 remains an internal control
-            system. Reach out by email or follow the founder and business accounts on X.
+            system. Reach out by email, connect on X, or review the public company profile.
           </p>
-          <div class="social-links" aria-label="Social links">
-            <a href="https://x.com/oromitayo12">@oromitayo12</a>
-            <a href="https://x.com/loomlogic3">@loomlogic3</a>
+          <div class="contact-highlights" aria-label="Loom Logic trust highlights">
+            <span>Public website separated from V2</span>
+            <span>Client-ready delivery</span>
+            <span>Safety-first systems</span>
           </div>
         </div>
-        <a class="primary-action" href="mailto:loomlogic3@gmail.com">loomlogic3@gmail.com</a>
+
+        <aside class="contact-card" aria-label="Loom Logic contact options">
+          <div class="contact-card-head">
+            <img src="./assets/loom-logic-icon.png" alt="" aria-hidden="true" />
+            <div>
+              <strong>Loom Logic</strong>
+              <span>Professional digital systems</span>
+            </div>
+          </div>
+
+          <div class="social-links" aria-label="Social links">
+            <a href="mailto:loomlogic3@gmail.com">
+              <span>Email</span>
+              loomlogic3@gmail.com
+            </a>
+            <a href="https://x.com/loomlogic3">
+              <span>X Business</span>
+              @loomlogic3
+            </a>
+            <a href="https://x.com/oromitayo12">
+              <span>X Founder</span>
+              @oromitayo12
+            </a>
+            <a href="https://github.com/loomlogic3">
+              <span>GitHub</span>
+              loomlogic3
+            </a>
+          </div>
+
+          <button class="primary-action contact-chat-action" type="button" data-open-chat>
+            Ask Loom&amp;Logic AI
+          </button>
+        </aside>
       </section>
+
+      <footer class="site-footer">
+        <span>&copy; 2026 Loom Logic. Built for professional digital systems.</span>
+        <div aria-label="Footer links">
+          <a href="#services">Services</a>
+          <a href="#systems">Systems</a>
+          <a href="#trust">Trust</a>
+          <a href="https://github.com/loomlogic3">GitHub</a>
+        </div>
+      </footer>
     </main>
 
     <section class="chat-widget" aria-live="polite">
       <button class="chat-fab" type="button" data-chat-toggle aria-expanded="false">
-        Ask Loom&amp;Logic AI
+        <span class="chat-fab-orb" aria-hidden="true"></span>
+        <span class="chat-fab-text">
+          <strong>Ask Loom&amp;Logic AI</strong>
+          <small>Public assistant</small>
+        </span>
       </button>
 
       <div class="chat-panel" data-chat-panel hidden>
         <div class="chat-panel-head">
+          <div class="chat-agent-mark" aria-hidden="true">LL</div>
           <div>
             <span class="eyebrow">Public Assistant</span>
             <strong>Loom&amp;Logic AI</strong>
+            <p>Fast answers about services, systems, trust, and contact.</p>
           </div>
-          <button class="chat-close" type="button" data-chat-close aria-label="Close chat">Close</button>
+          <button class="chat-close" type="button" data-chat-close aria-label="Close chat">×</button>
         </div>
 
         <div class="chat-disclaimer">
+          <span class="chat-status-dot" aria-hidden="true"></span>
           General information only. No financial advice. No live trading control.
         </div>
 
         <div class="starter-prompts" aria-label="Starter prompts">
+          <span>Suggested questions</span>
           <button type="button">What can Loom Logic build for my business?</button>
           <button type="button">Explain the safety-first approach.</button>
           <button type="button">What is the difference between the public website and V2?</button>
@@ -182,15 +317,17 @@
 
         <form class="chat-form" data-chat-form>
           <label for="chat-message">Message</label>
-          <textarea
-            id="chat-message"
-            name="message"
-            rows="3"
-            maxlength="900"
-            placeholder="Ask about Loom Logic services, systems, or safety-first workflows."
-            required
-          ></textarea>
-          <button type="submit">Send</button>
+          <div class="chat-input-shell">
+            <textarea
+              id="chat-message"
+              name="message"
+              rows="3"
+              maxlength="900"
+              placeholder="Ask about Loom Logic services, systems, or safety-first workflows."
+              required
+            ></textarea>
+            <button type="submit">Send</button>
+          </div>
         </form>
       </div>
     </section>

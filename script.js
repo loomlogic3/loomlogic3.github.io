@@ -6,6 +6,9 @@ const chatForm = document.querySelector('[data-chat-form]');
 const chatTextarea = document.querySelector('#chat-message');
 const chatMessages = document.querySelector('[data-chat-messages]');
 const starterPrompts = document.querySelectorAll('.starter-prompts button');
+const chatWidget = document.querySelector('.chat-widget');
+const inquiryForm = document.querySelector('[data-inquiry-form]');
+const inquiryStatus = document.querySelector('[data-inquiry-status]');
 
 const fallbackReply = (message) => {
   const lower = message.toLowerCase();
@@ -23,6 +26,7 @@ const fallbackReply = (message) => {
 
 const setChatOpen = (open) => {
   chatPanel.hidden = !open;
+  chatWidget.classList.toggle('is-open', open);
   chatToggle.setAttribute('aria-expanded', String(open));
   if (open) {
     chatTextarea.focus();
@@ -80,8 +84,8 @@ openChatButtons.forEach((button) => {
 starterPrompts.forEach((button) => {
   button.addEventListener('click', () => {
     setChatOpen(true);
-    chatTextarea.value = button.textContent;
     sendMessage(button.textContent);
+    chatTextarea.value = '';
   });
 });
 
@@ -90,4 +94,37 @@ chatForm.addEventListener('submit', (event) => {
   const message = chatTextarea.value;
   chatTextarea.value = '';
   sendMessage(message);
+});
+
+inquiryForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(inquiryForm);
+  const name = String(formData.get('name') || '').trim();
+  const email = String(formData.get('email') || '').trim();
+  const projectType = String(formData.get('projectType') || '').trim();
+  const budget = String(formData.get('budget') || 'Not sure yet').trim() || 'Not sure yet';
+  const message = String(formData.get('message') || '').trim();
+
+  const subject = `Project inquiry from ${name || 'a Loom Logic visitor'}`;
+  const body = [
+    'Hello Loom Logic,',
+    '',
+    'I would like to discuss a project.',
+    '',
+    `Name: ${name}`,
+    `Email: ${email}`,
+    `Project type: ${projectType}`,
+    `Budget range: ${budget}`,
+    '',
+    'Project details:',
+    message,
+    '',
+    'Sent from the Loom Logic professional website.',
+  ].join('\n');
+
+  const href = `mailto:loomlogic3@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  inquiryStatus.textContent = 'Opening your email app with the prepared inquiry.';
+  inquiryStatus.classList.add('is-success');
+  window.location.href = href;
 });
