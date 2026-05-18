@@ -222,6 +222,14 @@ p {
   font-size: 17px;
 }
 
+.services-section {
+  padding-bottom: clamp(34px, 5vw, 64px);
+}
+
+.section-band {
+  padding-top: clamp(44px, 6vw, 72px);
+}
+
 .systems-grid,
 .trust-grid {
   display: grid;
@@ -639,24 +647,26 @@ p {
 }
 
 .chat-fab {
-  min-height: 62px;
+  min-height: 58px;
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  border: 1px solid rgba(185, 245, 232, 0.48);
+  border: 1px solid rgba(185, 245, 232, 0.26);
   border-radius: 999px;
-  padding: 10px 18px 10px 10px;
+  padding: 9px 16px 9px 9px;
   background:
-    linear-gradient(135deg, rgba(99, 215, 198, 0.96), rgba(16, 185, 129, 0.94)),
-    #10b981;
-  color: #03111b;
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.035)),
+    rgba(8, 17, 31, 0.72);
+  color: #f8fbff;
   cursor: pointer;
   font-weight: 900;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.46),
-    0 0 0 7px rgba(16, 185, 129, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.36);
-  transition: transform 160ms ease, box-shadow 160ms ease;
+    0 20px 60px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(255, 255, 255, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 
 .chat-widget.is-open .chat-fab {
@@ -667,15 +677,16 @@ p {
 
 .chat-fab:hover {
   transform: translateY(-2px);
+  border-color: rgba(99, 215, 198, 0.5);
   box-shadow:
     0 24px 70px rgba(0, 0, 0, 0.52),
-    0 0 0 9px rgba(16, 185, 129, 0.09),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 0 0 7px rgba(16, 185, 129, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .chat-fab-orb {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 999px;
   background:
     radial-gradient(circle at 42% 36%, #f8fbff 0 8%, transparent 9%),
@@ -702,7 +713,7 @@ p {
 }
 
 .chat-fab-text small {
-  color: rgba(3, 17, 27, 0.72);
+  color: #63d7c6;
   font-size: 11px;
   font-weight: 950;
   text-transform: uppercase;
@@ -1146,11 +1157,12 @@ p {
   .chat-widget {
     right: 12px;
     bottom: 12px;
-    left: 12px;
+    left: auto;
   }
 
   .chat-fab {
-    width: 100%;
+    width: auto;
+    max-width: calc(100vw - 24px);
     justify-content: center;
   }
 
