@@ -96,19 +96,22 @@ chatForm.addEventListener('submit', (event) => {
   sendMessage(message);
 });
 
-inquiryForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-
+const buildInquiryPayload = () => {
   const formData = new FormData(inquiryForm);
-  const name = String(formData.get('name') || '').trim();
-  const email = String(formData.get('email') || '').trim();
-  const projectType = String(formData.get('projectType') || '').trim();
-  const budget = String(formData.get('budget') || 'Not sure yet').trim() || 'Not sure yet';
-  const message = String(formData.get('message') || '').trim();
+  return {
+    name: String(formData.get('name') || '').trim(),
+    email: String(formData.get('email') || '').trim(),
+    projectType: String(formData.get('projectType') || '').trim(),
+    budget: String(formData.get('budget') || 'Not sure yet').trim() || 'Not sure yet',
+    message: String(formData.get('message') || '').trim(),
+    source: 'professional-site',
+  };
+};
 
-  const subject = `Project inquiry from ${name || 'a Loom Logic visitor'}`;
+const openInquiryEmailFallback = ({ name, email, projectType, budget, message }) => {
+  const subject = `Project inquiry from ${name || 'a professional site visitor'}`;
   const body = [
-    'Hello Loom Logic,',
+    'Hello,',
     '',
     'I would like to discuss a project.',
     '',
@@ -120,11 +123,42 @@ inquiryForm.addEventListener('submit', (event) => {
     'Project details:',
     message,
     '',
-    'Sent from the Loom Logic professional website.',
+    'Sent from the professional website.',
   ].join('\n');
 
   const href = `mailto:loomlogic3@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  inquiryStatus.textContent = 'Opening your email app with the prepared inquiry.';
-  inquiryStatus.classList.add('is-success');
   window.location.href = href;
+};
+
+inquiryForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const payload = buildInquiryPayload();
+  const submitButton = inquiryForm.querySelector('button[type="submit"]');
+  inquiryStatus.classList.remove('is-success');
+  inquiryStatus.textContent = 'Sending your inquiry...';
+  submitButton.disabled = true;
+
+  try {
+    const response = await fetch('/api/inquiries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || 'Inquiry request failed');
+    }
+
+    inquiryForm.reset();
+    inquiryStatus.textContent = 'Inquiry sent. Thank you. We will review it and follow up by email.';
+    inquiryStatus.classList.add('is-success');
+  } catch {
+    inquiryStatus.textContent = 'The secure form is unavailable, so your email app will open with a prepared inquiry.';
+    inquiryStatus.classList.add('is-success');
+    openInquiryEmailFallback(payload);
+  } finally {
+    submitButton.disabled = false;
+  }
 });
