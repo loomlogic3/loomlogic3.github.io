@@ -1,9 +1,10 @@
 const admin = require('firebase-admin');
+const { FieldValue, getFirestore } = require('firebase-admin/firestore');
 const { onRequest } = require('firebase-functions/v2/https');
 
-admin.initializeApp();
+const app = admin.initializeApp();
 
-const db = admin.firestore();
+const db = getFirestore(app, 'default');
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const MAX_FIELD_LENGTH = 1200;
@@ -46,7 +47,7 @@ const checkRateLimit = async (key) => {
     transaction.set(ref, {
       count,
       windowStart: expired ? now : windowStart,
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     }, { merge: true });
     return count <= MAX_PER_WINDOW;
   });
@@ -83,7 +84,7 @@ exports.submitInquiry = onRequest({ region: 'us-central1' }, async (req, res) =>
       message: clean(body.message, 1200),
       source: clean(body.source, 80) || 'professional-site',
       status: 'new',
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
       userAgent: clean(req.headers['user-agent'], 300),
     };
 
