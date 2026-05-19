@@ -9,7 +9,7 @@
       name="description"
       content="Private-facing Loom Logic social content studio for safe draft creation and review."
     />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260519-social-studio" />
   </head>
   <body class="studio-body">
     <header class="site-header">
@@ -25,17 +25,29 @@
     </header>
 
     <main class="studio-shell">
-      <section class="studio-hero">
-        <span class="eyebrow">Private Workspace</span>
-        <h1>Loom Logic Social Studio</h1>
-        <p>
-          Draft safe, professional social posts for Loom Logic accounts. This tool does not follow,
-          like, DM, scrape, auto-post, control bots, or connect to any social platform.
-        </p>
+      <section class="studio-hero studio-panel">
+        <div>
+          <span class="eyebrow">Private Workspace</span>
+          <h1>Loom Logic Social Studio</h1>
+          <p>
+            Draft safe, professional social posts for Loom Logic accounts. This tool does not follow,
+            like, DM, scrape, auto-post, control bots, or connect to any social platform.
+          </p>
+        </div>
+        <div class="studio-hero-badges" aria-label="Studio safety summary">
+          <span>Draft only</span>
+          <span>Human approval</span>
+          <span>No auto-posting</span>
+        </div>
       </section>
 
       <section id="draft" class="studio-layout">
         <form class="studio-panel studio-form" data-social-form>
+          <div class="studio-panel-head">
+            <span class="eyebrow">Draft Builder</span>
+            <strong>Compose a safe post brief.</strong>
+          </div>
+
           <div class="form-field">
             <label for="social-account">Account voice</label>
             <select id="social-account" name="account">
@@ -136,6 +148,6 @@
       </section>
     </main>
 
-    <script src="./social-studio.js" defer></script>
+    <script src="./social-studio.js?v=20260519-social-studio" defer></script>
   </body>
 </html>
