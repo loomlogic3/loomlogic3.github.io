@@ -292,6 +292,28 @@ p {
   margin-bottom: 24px;
 }
 
+.system-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  margin: 0 24px 24px;
+  border: 1px solid rgba(99, 215, 198, 0.24);
+  border-radius: 12px;
+  padding: 9px 13px;
+  color: #b9f5e8;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.018)),
+    rgba(16, 185, 129, 0.08);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.system-link:hover {
+  border-color: rgba(99, 215, 198, 0.46);
+  background: rgba(16, 185, 129, 0.14);
+}
+
 .accent-art {
   border-color: rgba(99, 215, 198, 0.28);
 }
