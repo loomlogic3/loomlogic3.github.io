@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Loom Logic Admin</title>
+    <meta
+      name="description"
+      content="Private Loom Logic admin home for inquiries, social drafts, and operating links."
+    />
+    <link rel="stylesheet" href="./styles.css?v=20260520-admin-home" />
+  </head>
+  <body class="admin-body">
+    <header class="site-header">
+      <a class="brand-lockup" href="./index.html" aria-label="Loom Logic home">
+        <img src="./assets/loom-logic-icon.png" alt="Loom Logic logo" />
+        <span>Loom Logic</span>
+      </a>
+      <nav aria-label="Admin navigation">
+        <a href="./index.html">Public Site</a>
+        <a href="./admin-inquiries.html">Inquiry Desk</a>
+        <a href="./social-studio.html">Social Studio</a>
+      </nav>
+    </header>
+
+    <section class="admin-access-gate" data-admin-gate>
+      <div class="admin-panel admin-gate-card">
+        <span class="eyebrow">Private Workspace</span>
+        <h1>Admin access required</h1>
+        <p>
+          Unlock the Loom Logic admin home to review inquiries and move into private tools.
+        </p>
+        <form class="inquiry-admin-login" data-admin-home-login-form>
+          <label for="admin-home-passcode">Passcode</label>
+          <div class="inquiry-admin-login-row">
+            <input
+              id="admin-home-passcode"
+              name="passcode"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Enter admin passcode"
+              required
+            />
+            <button class="primary-action" type="submit">Unlock</button>
+          </div>
+          <p class="form-note" data-admin-home-status>
+            The passcode is verified by the Firebase backend.
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <main class="admin-shell admin-home-shell" data-admin-home hidden style="display: none;" aria-hidden="true">
+      <section class="admin-hero admin-home-hero">
+        <div>
+          <span class="eyebrow">Control Center</span>
+          <h1>Loom Logic Admin</h1>
+          <p>
+            A private front desk for client inquiries and safe social drafting. Public pages stay
+            separate from internal tools.
+          </p>
+        </div>
+        <button class="secondary-action" type="button" data-admin-home-lock>Lock</button>
+      </section>
+
+      <section class="admin-home-grid" aria-label="Admin summary">
+        <article class="admin-card">
+          <span class="eyebrow">Inquiries</span>
+          <strong data-total-inquiries>--</strong>
+          <p>Recent website project requests available in the Inquiry Desk.</p>
+        </article>
+        <article class="admin-card">
+          <span class="eyebrow">New</span>
+          <strong data-new-inquiries>--</strong>
+          <p>Requests still marked as new in Firestore.</p>
+        </article>
+        <article class="admin-card">
+          <span class="eyebrow">Tools</span>
+          <strong>2</strong>
+          <p>Inquiry Desk and Social Studio are protected by the same backend passcode.</p>
+        </article>
+      </section>
+
+      <section class="admin-home-actions" aria-label="Admin tools">
+        <a class="admin-tool-card" href="./admin-inquiries.html">
+          <span class="eyebrow">Client Requests</span>
+          <strong>Open Inquiry Desk</strong>
+          <p>Review submitted project inquiries and reply by email.</p>
+        </a>
+        <a class="admin-tool-card" href="./social-studio.html">
+          <span class="eyebrow">Drafts</span>
+          <strong>Open Social Studio</strong>
+          <p>Generate safe draft posts for business and founder accounts.</p>
+        </a>
+      </section>
+
+      <section class="admin-panel recent-activity-panel">
+        <div class="inquiry-desk-head">
+          <div>
+            <span class="eyebrow">Recent Activity</span>
+            <h2>Latest inquiries</h2>
+          </div>
+          <button class="secondary-action" type="button" data-admin-refresh>Refresh</button>
+        </div>
+        <div class="admin-recent-list" data-admin-recent-list>
+          <p class="empty-state">Loading recent inquiries...</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="./admin-auth.js?v=20260520-admin-home"></script>
+    <script src="./admin-home.js?v=20260520-admin-home"></script>
+  </body>
+</html>

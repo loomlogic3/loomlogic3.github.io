@@ -1217,6 +1217,14 @@ p {
   max-width: 920px;
 }
 
+.admin-home-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  max-width: none;
+}
+
 .admin-hero p {
   margin-top: 18px;
   max-width: 760px;
@@ -1248,6 +1256,82 @@ p {
 
 .admin-card p {
   margin-top: 10px;
+}
+
+.admin-home-grid,
+.admin-home-actions {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-home-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-tool-card {
+  border: 1px solid rgba(99, 215, 198, 0.18);
+  border-radius: 20px;
+  padding: 22px;
+  background:
+    linear-gradient(145deg, rgba(15, 23, 42, 0.74), rgba(3, 11, 22, 0.82)),
+    rgba(15, 23, 42, 0.62);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
+}
+
+.admin-tool-card strong {
+  display: block;
+  margin-top: 8px;
+  color: #f8fbff;
+  font-size: 24px;
+}
+
+.recent-activity-panel {
+  width: 100%;
+}
+
+.admin-recent-list {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-recent-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(8, 17, 31, 0.5);
+}
+
+.admin-recent-item strong {
+  display: block;
+  margin-top: 6px;
+  color: #f8fbff;
+  font-size: 18px;
+}
+
+.admin-recent-item p {
+  margin: 8px 0 0;
+}
+
+.admin-recent-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 160px;
+}
+
+.admin-recent-meta span {
+  border: 1px solid rgba(99, 215, 198, 0.18);
+  border-radius: 999px;
+  padding: 7px 10px;
+  color: #c9d7ea;
+  background: rgba(8, 17, 31, 0.48);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .admin-draft-form {
@@ -1486,9 +1570,21 @@ p {
   .inquiry-layout,
   .draft-grid,
   .admin-grid,
+  .admin-home-grid,
+  .admin-home-actions,
   .admin-draft-grid,
   .admin-draft-form {
     grid-template-columns: 1fr;
+  }
+
+  .admin-home-hero,
+  .admin-recent-item {
+    flex-direction: column;
+  }
+
+  .admin-recent-meta {
+    align-items: flex-start;
+    min-width: 0;
   }
 
   .hero-section {
