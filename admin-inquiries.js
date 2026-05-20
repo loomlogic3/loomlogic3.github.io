@@ -8,6 +8,7 @@ const refreshButton = document.querySelector('[data-refresh-inquiries]');
 const lockButton = document.querySelector('[data-lock-inquiries]');
 
 let adminToken = '';
+const inquiryStatuses = ['new', 'reviewed', 'contacted', 'closed'];
 
 const lockDesk = () => {
   adminToken = '';
@@ -52,6 +53,16 @@ const renderInquiries = (inquiries) => {
       const replyHref = `mailto:${encodeURIComponent(inquiry.email)}?subject=${encodeURIComponent(
         `Re: ${inquiry.projectType || 'Project inquiry'}`
       )}`;
+      const statusButtons = inquiryStatuses.map((status) => `
+        <button
+          class="status-chip ${status === (inquiry.status || 'new') ? 'is-active' : ''}"
+          type="button"
+          data-inquiry-id="${escapeHtml(inquiry.id)}"
+          data-inquiry-status="${status}"
+        >
+          ${escapeHtml(status)}
+        </button>
+      `).join('');
       return `
         <article class="inquiry-item">
           <div class="inquiry-item-head">
@@ -69,6 +80,9 @@ const renderInquiries = (inquiries) => {
           </div>
           <div class="inquiry-desk-actions">
             <a class="secondary-action" href="${replyHref}">Reply by email</a>
+          </div>
+          <div class="inquiry-status-controls" aria-label="Inquiry status controls">
+            ${statusButtons}
           </div>
         </article>
       `;
@@ -90,6 +104,22 @@ const loadInquiries = async () => {
   }
 
   renderInquiries(data.inquiries || []);
+};
+
+const updateInquiryStatus = async (id, status) => {
+  const response = await fetch('/api/inquiries', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Admin-Token': adminToken,
+    },
+    body: JSON.stringify({ id, status }),
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.ok) {
+    throw new Error(data.error || 'Inquiry status could not be updated.');
+  }
 };
 
 const unlockDesk = async (token) => {
@@ -126,6 +156,28 @@ refreshButton.addEventListener('click', async () => {
     await loadInquiries();
   } catch (error) {
     listNode.innerHTML = `<p class="empty-state">${error.message || 'Could not refresh inquiries.'}</p>`;
+  }
+});
+
+listNode.addEventListener('click', async (event) => {
+  const button = event.target.closest('[data-inquiry-id][data-inquiry-status]');
+  if (!button) return;
+
+  const id = button.getAttribute('data-inquiry-id');
+  const nextStatus = button.getAttribute('data-inquiry-status');
+  button.disabled = true;
+  button.textContent = 'Saving';
+
+  try {
+    await updateInquiryStatus(id, nextStatus);
+    await loadInquiries();
+  } catch (error) {
+    button.disabled = false;
+    button.textContent = nextStatus;
+    listNode.insertAdjacentHTML(
+      'afterbegin',
+      `<p class="empty-state">${escapeHtml(error.message || 'Could not update inquiry status.')}</p>`
+    );
   }
 });
 

@@ -8,6 +8,7 @@ const db = getFirestore(app, 'default');
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const MAX_FIELD_LENGTH = 1200;
+const inquiryStatuses = new Set(['new', 'reviewed', 'contacted', 'closed']);
 
 const allowedOrigins = new Set([
   'https://loomlogic-professional.web.app',
@@ -31,7 +32,7 @@ const applyCors = (req, res) => {
     res.set('Access-Control-Allow-Origin', origin);
   }
   res.set('Vary', 'Origin');
-  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.set('Access-Control-Allow-Methods', 'GET, PATCH, POST, OPTIONS');
   res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type, X-Admin-Token');
 };
 
@@ -85,6 +86,37 @@ const listInquiries = async (req, res) => {
   });
 
   res.status(200).json({ ok: true, inquiries });
+};
+
+const updateInquiry = async (req, res) => {
+  const auth = isAdminAuthorized(req);
+  if (!auth.ok) {
+    res.status(auth.status).json({ ok: false, error: auth.error });
+    return;
+  }
+
+  const body = req.body || {};
+  const id = clean(body.id, 120).replace(/[^a-zA-Z0-9_-]/g, '');
+  const status = clean(body.status, 40).toLowerCase();
+
+  if (!id || !inquiryStatuses.has(status)) {
+    res.status(400).json({ ok: false, error: 'Invalid inquiry update.' });
+    return;
+  }
+
+  const ref = db.collection('inquiries').doc(id);
+  const snapshot = await ref.get();
+  if (!snapshot.exists) {
+    res.status(404).json({ ok: false, error: 'Inquiry not found.' });
+    return;
+  }
+
+  await ref.set({
+    status,
+    updatedAt: FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  res.status(200).json({ ok: true, id, status });
 };
 
 const functionOptions = { region: 'us-central1', secrets: ['ADMIN_VIEWER_TOKEN'] };
@@ -144,6 +176,16 @@ exports.submitInquiry = onRequest(functionOptions, async (req, res) => {
     } catch (error) {
       console.error('Inquiry list failed', error && error.message ? error.message : error);
       res.status(500).json({ ok: false, error: 'Inquiries could not be loaded.' });
+    }
+    return;
+  }
+
+  if (req.method === 'PATCH') {
+    try {
+      await updateInquiry(req, res);
+    } catch (error) {
+      console.error('Inquiry update failed', error && error.message ? error.message : error);
+      res.status(500).json({ ok: false, error: 'Inquiry could not be updated.' });
     }
     return;
   }
