@@ -6,9 +6,12 @@ const desk = document.querySelector('[data-inquiry-desk]');
 const listNode = document.querySelector('[data-inquiry-list]');
 const refreshButton = document.querySelector('[data-refresh-inquiries]');
 const lockButton = document.querySelector('[data-lock-inquiries]');
+const filterButtons = document.querySelectorAll('[data-inquiry-filter]');
 
 let adminToken = '';
 const inquiryStatuses = ['new', 'reviewed', 'contacted', 'closed'];
+let activeFilter = 'all';
+let currentInquiries = [];
 
 const lockDesk = () => {
   adminToken = '';
@@ -43,12 +46,16 @@ const escapeHtml = (value) => String(value || '')
   .replace(/'/g, '&#039;');
 
 const renderInquiries = (inquiries) => {
-  if (!inquiries.length) {
+  const visibleInquiries = activeFilter === 'all'
+    ? inquiries
+    : inquiries.filter((inquiry) => (inquiry.status || 'new') === activeFilter);
+
+  if (!visibleInquiries.length) {
     listNode.innerHTML = '<p class="empty-state">No inquiries yet.</p>';
     return;
   }
 
-  listNode.innerHTML = inquiries
+  listNode.innerHTML = visibleInquiries
     .map((inquiry) => {
       const replyHref = `mailto:${encodeURIComponent(inquiry.email)}?subject=${encodeURIComponent(
         `Re: ${inquiry.projectType || 'Project inquiry'}`
@@ -84,6 +91,16 @@ const renderInquiries = (inquiries) => {
           <div class="inquiry-status-controls" aria-label="Inquiry status controls">
             ${statusButtons}
           </div>
+          <form class="inquiry-note-form" data-note-form data-inquiry-id="${escapeHtml(inquiry.id)}">
+            <label for="note-${escapeHtml(inquiry.id)}">Private note</label>
+            <textarea
+              id="note-${escapeHtml(inquiry.id)}"
+              name="adminNote"
+              rows="3"
+              placeholder="Add private follow-up notes, next steps, or client context."
+            >${escapeHtml(inquiry.adminNote || '')}</textarea>
+            <button class="secondary-action" type="submit">Save Note</button>
+          </form>
         </article>
       `;
     })
@@ -103,22 +120,23 @@ const loadInquiries = async () => {
     throw new Error(data.error || 'Inquiries could not be loaded.');
   }
 
-  renderInquiries(data.inquiries || []);
+  currentInquiries = data.inquiries || [];
+  renderInquiries(currentInquiries);
 };
 
-const updateInquiryStatus = async (id, status) => {
+const updateInquiry = async (payload) => {
   const response = await fetch('/api/inquiries', {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
       'X-Admin-Token': adminToken,
     },
-    body: JSON.stringify({ id, status }),
+    body: JSON.stringify(payload),
   });
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok || !data.ok) {
-    throw new Error(data.error || 'Inquiry status could not be updated.');
+    throw new Error(data.error || 'Inquiry could not be updated.');
   }
 };
 
@@ -159,6 +177,16 @@ refreshButton.addEventListener('click', async () => {
   }
 });
 
+filterButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    activeFilter = button.getAttribute('data-inquiry-filter') || 'all';
+    filterButtons.forEach((filterButton) => {
+      filterButton.classList.toggle('is-active', filterButton === button);
+    });
+    renderInquiries(currentInquiries);
+  });
+});
+
 listNode.addEventListener('click', async (event) => {
   const button = event.target.closest('[data-inquiry-id][data-inquiry-status]');
   if (!button) return;
@@ -169,7 +197,7 @@ listNode.addEventListener('click', async (event) => {
   button.textContent = 'Saving';
 
   try {
-    await updateInquiryStatus(id, nextStatus);
+    await updateInquiry({ id, status: nextStatus });
     await loadInquiries();
   } catch (error) {
     button.disabled = false;
@@ -178,6 +206,34 @@ listNode.addEventListener('click', async (event) => {
       'afterbegin',
       `<p class="empty-state">${escapeHtml(error.message || 'Could not update inquiry status.')}</p>`
     );
+  }
+});
+
+listNode.addEventListener('submit', async (event) => {
+  const form = event.target.closest('[data-note-form]');
+  if (!form) return;
+  event.preventDefault();
+
+  const id = form.getAttribute('data-inquiry-id');
+  const textarea = form.querySelector('textarea[name="adminNote"]');
+  const button = form.querySelector('button[type="submit"]');
+  button.disabled = true;
+  button.textContent = 'Saving';
+
+  try {
+    await updateInquiry({ id, adminNote: textarea.value });
+    button.textContent = 'Saved';
+  } catch (error) {
+    button.textContent = 'Try Again';
+    form.insertAdjacentHTML(
+      'beforeend',
+      `<p class="empty-state">${escapeHtml(error.message || 'Could not save note.')}</p>`
+    );
+  } finally {
+    setTimeout(() => {
+      button.disabled = false;
+      button.textContent = 'Save Note';
+    }, 900);
   }
 });
 

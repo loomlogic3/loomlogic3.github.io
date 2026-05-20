@@ -9,7 +9,7 @@
       name="description"
       content="Private Loom Logic inquiry viewer for reviewing website project requests."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260520-inquiry-status" />
+    <link rel="stylesheet" href="./styles.css?v=20260520-inquiry-notes" />
   </head>
   <body class="admin-body inquiry-admin-body">
     <header class="site-header">
@@ -75,11 +75,18 @@
             <button class="secondary-action" type="button" data-lock-inquiries>Lock</button>
           </div>
         </div>
+        <div class="inquiry-filter-bar" aria-label="Filter inquiries by status">
+          <button class="status-chip is-active" type="button" data-inquiry-filter="all">all</button>
+          <button class="status-chip" type="button" data-inquiry-filter="new">new</button>
+          <button class="status-chip" type="button" data-inquiry-filter="reviewed">reviewed</button>
+          <button class="status-chip" type="button" data-inquiry-filter="contacted">contacted</button>
+          <button class="status-chip" type="button" data-inquiry-filter="closed">closed</button>
+        </div>
         <div class="inquiry-list" data-inquiry-list></div>
       </section>
     </main>
 
-    <script src="./admin-auth.js?v=20260520-inquiry-status"></script>
-    <script src="./admin-inquiries.js?v=20260520-inquiry-status"></script>
+    <script src="./admin-auth.js?v=20260520-inquiry-notes"></script>
+    <script src="./admin-inquiries.js?v=20260520-inquiry-notes"></script>
   </body>
 </html>

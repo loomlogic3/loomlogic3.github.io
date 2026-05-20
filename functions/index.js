@@ -79,9 +79,11 @@ const listInquiries = async (req, res) => {
       projectType: data.projectType || '',
       budget: data.budget || '',
       message: data.message || '',
+      adminNote: data.adminNote || '',
       source: data.source || '',
       status: data.status || 'new',
       createdAt: toIsoDate(data.createdAt),
+      updatedAt: toIsoDate(data.updatedAt),
     };
   });
 
@@ -97,9 +99,22 @@ const updateInquiry = async (req, res) => {
 
   const body = req.body || {};
   const id = clean(body.id, 120).replace(/[^a-zA-Z0-9_-]/g, '');
-  const status = clean(body.status, 40).toLowerCase();
+  const updates = {};
 
-  if (!id || !inquiryStatuses.has(status)) {
+  if (Object.prototype.hasOwnProperty.call(body, 'status')) {
+    const status = clean(body.status, 40).toLowerCase();
+    if (!inquiryStatuses.has(status)) {
+      res.status(400).json({ ok: false, error: 'Invalid inquiry status.' });
+      return;
+    }
+    updates.status = status;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(body, 'adminNote')) {
+    updates.adminNote = clean(body.adminNote, 1000);
+  }
+
+  if (!id || !Object.keys(updates).length) {
     res.status(400).json({ ok: false, error: 'Invalid inquiry update.' });
     return;
   }
@@ -112,11 +127,11 @@ const updateInquiry = async (req, res) => {
   }
 
   await ref.set({
-    status,
+    ...updates,
     updatedAt: FieldValue.serverTimestamp(),
   }, { merge: true });
 
-  res.status(200).json({ ok: true, id, status });
+  res.status(200).json({ ok: true, id, ...updates });
 };
 
 const functionOptions = { region: 'us-central1', secrets: ['ADMIN_VIEWER_TOKEN'] };
