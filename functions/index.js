@@ -9,6 +9,7 @@ const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const MAX_FIELD_LENGTH = 1200;
 const inquiryStatuses = new Set(['new', 'reviewed', 'contacted', 'closed']);
+const socialDraftStatuses = new Set(['draft', 'approved', 'posted', 'archived']);
 
 const allowedOrigins = new Set([
   'https://loomlogic-professional.web.app',
@@ -134,6 +135,101 @@ const updateInquiry = async (req, res) => {
   res.status(200).json({ ok: true, id, ...updates });
 };
 
+const serializeSocialDraft = (doc) => {
+  const data = doc.data();
+  return {
+    id: doc.id,
+    account: data.account || '',
+    platform: data.platform || '',
+    goal: data.goal || '',
+    tone: data.tone || '',
+    topic: data.topic || '',
+    notes: data.notes || '',
+    label: data.label || '',
+    text: data.text || '',
+    status: data.status || 'draft',
+    createdAt: toIsoDate(data.createdAt),
+    updatedAt: toIsoDate(data.updatedAt),
+  };
+};
+
+const listSocialDrafts = async (req, res) => {
+  const auth = isAdminAuthorized(req);
+  if (!auth.ok) {
+    res.status(auth.status).json({ ok: false, error: auth.error });
+    return;
+  }
+
+  const snapshot = await db
+    .collection('socialDrafts')
+    .orderBy('createdAt', 'desc')
+    .limit(60)
+    .get();
+
+  res.status(200).json({ ok: true, drafts: snapshot.docs.map(serializeSocialDraft) });
+};
+
+const createSocialDraft = async (req, res) => {
+  const auth = isAdminAuthorized(req);
+  if (!auth.ok) {
+    res.status(auth.status).json({ ok: false, error: auth.error });
+    return;
+  }
+
+  const body = req.body || {};
+  const draft = {
+    account: clean(body.account, 80),
+    platform: clean(body.platform, 80),
+    goal: clean(body.goal, 120),
+    tone: clean(body.tone, 120),
+    topic: clean(body.topic, 180),
+    notes: clean(body.notes, 600),
+    label: clean(body.label, 120),
+    text: clean(body.text, 900),
+    status: 'draft',
+    createdAt: FieldValue.serverTimestamp(),
+    updatedAt: FieldValue.serverTimestamp(),
+  };
+
+  if (!draft.account || !draft.platform || !draft.label || !draft.text) {
+    res.status(400).json({ ok: false, error: 'Missing draft details.' });
+    return;
+  }
+
+  const doc = await db.collection('socialDrafts').add(draft);
+  res.status(201).json({ ok: true, id: doc.id });
+};
+
+const updateSocialDraft = async (req, res) => {
+  const auth = isAdminAuthorized(req);
+  if (!auth.ok) {
+    res.status(auth.status).json({ ok: false, error: auth.error });
+    return;
+  }
+
+  const body = req.body || {};
+  const id = clean(body.id, 120).replace(/[^a-zA-Z0-9_-]/g, '');
+  const status = clean(body.status, 40).toLowerCase();
+  if (!id || !socialDraftStatuses.has(status)) {
+    res.status(400).json({ ok: false, error: 'Invalid draft update.' });
+    return;
+  }
+
+  const ref = db.collection('socialDrafts').doc(id);
+  const snapshot = await ref.get();
+  if (!snapshot.exists) {
+    res.status(404).json({ ok: false, error: 'Draft not found.' });
+    return;
+  }
+
+  await ref.set({
+    status,
+    updatedAt: FieldValue.serverTimestamp(),
+  }, { merge: true });
+
+  res.status(200).json({ ok: true, id, status });
+};
+
 const functionOptions = { region: 'us-central1', secrets: ['ADMIN_VIEWER_TOKEN'] };
 
 exports.verifyAdmin = onRequest(functionOptions, (req, res) => {
@@ -156,6 +252,37 @@ exports.verifyAdmin = onRequest(functionOptions, (req, res) => {
   }
 
   res.status(200).json({ ok: true });
+});
+
+exports.manageSocialDrafts = onRequest(functionOptions, async (req, res) => {
+  applyCors(req, res);
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  try {
+    if (req.method === 'GET') {
+      await listSocialDrafts(req, res);
+      return;
+    }
+
+    if (req.method === 'POST') {
+      await createSocialDraft(req, res);
+      return;
+    }
+
+    if (req.method === 'PATCH') {
+      await updateSocialDraft(req, res);
+      return;
+    }
+
+    res.status(405).json({ ok: false, error: 'Method not allowed' });
+  } catch (error) {
+    console.error('Social draft request failed', error && error.message ? error.message : error);
+    res.status(500).json({ ok: false, error: 'Social draft request failed.' });
+  }
 });
 
 const checkRateLimit = async (key) => {

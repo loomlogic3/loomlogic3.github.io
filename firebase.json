@@ -25,6 +25,13 @@
           "functionId": "verifyAdmin",
           "region": "us-central1"
         }
+      },
+      {
+        "source": "/api/social-drafts",
+        "function": {
+          "functionId": "manageSocialDrafts",
+          "region": "us-central1"
+        }
       }
     ]
   }

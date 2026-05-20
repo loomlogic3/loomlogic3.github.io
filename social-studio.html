@@ -9,7 +9,7 @@
       name="description"
       content="Private-facing Loom Logic social content studio for safe draft creation and review."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260520-admin-home" />
+    <link rel="stylesheet" href="./styles.css?v=20260520-draft-library" />
   </head>
   <body class="studio-body">
     <header class="site-header">
@@ -22,6 +22,7 @@
         <a href="./admin.html">Admin</a>
         <a href="./admin-inquiries.html">Inquiry Desk</a>
         <a href="#draft">Draft</a>
+        <a href="#library">Library</a>
         <a href="#guardrails">Guardrails</a>
       </nav>
     </header>
@@ -175,9 +176,28 @@
 
         <div class="draft-grid" data-draft-grid></div>
       </section>
+
+      <section id="library" class="studio-results draft-library-section">
+        <div class="section-head">
+          <span class="eyebrow">Draft Library</span>
+          <h2>Saved social drafts.</h2>
+          <p>Manual-post only. Approve, post, or archive after human review.</p>
+        </div>
+        <div class="inquiry-filter-bar" aria-label="Filter drafts by status">
+          <button class="status-chip is-active" type="button" data-draft-filter="all">all</button>
+          <button class="status-chip" type="button" data-draft-filter="draft">draft</button>
+          <button class="status-chip" type="button" data-draft-filter="approved">approved</button>
+          <button class="status-chip" type="button" data-draft-filter="posted">posted</button>
+          <button class="status-chip" type="button" data-draft-filter="archived">archived</button>
+          <button class="secondary-action" type="button" data-refresh-drafts>Refresh</button>
+        </div>
+        <div class="draft-grid" data-draft-library>
+          <p class="empty-state">Unlock the studio to load saved drafts.</p>
+        </div>
+      </section>
     </main>
 
-    <script src="./admin-auth.js?v=20260520-admin-home" defer></script>
-    <script src="./social-studio.js?v=20260520-admin-home" defer></script>
+    <script src="./admin-auth.js?v=20260520-draft-library" defer></script>
+    <script src="./social-studio.js?v=20260520-draft-library" defer></script>
   </body>
 </html>
