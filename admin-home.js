@@ -8,6 +8,10 @@ const refreshButton = document.querySelector('[data-admin-refresh]');
 const totalNode = document.querySelector('[data-total-inquiries]');
 const newNode = document.querySelector('[data-new-inquiries]');
 const recentList = document.querySelector('[data-admin-recent-list]');
+const totalDraftsNode = document.querySelector('[data-total-drafts]');
+const approvedDraftsNode = document.querySelector('[data-approved-drafts]');
+const postedDraftsNode = document.querySelector('[data-posted-drafts]');
+const draftList = document.querySelector('[data-admin-draft-list]');
 
 let adminToken = '';
 
@@ -72,23 +76,61 @@ const renderRecent = (inquiries) => {
   `).join('');
 };
 
-const loadAdminSummary = async () => {
-  recentList.innerHTML = '<p class="empty-state">Loading recent inquiries...</p>';
-  const response = await fetch('/api/inquiries', {
-    headers: {
-      'X-Admin-Token': adminToken,
-    },
-  });
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || !data.ok) {
-    throw new Error(data.error || 'Admin summary could not be loaded.');
+const renderRecentDrafts = (drafts) => {
+  const recent = drafts.slice(0, 5);
+  if (!recent.length) {
+    draftList.innerHTML = '<p class="empty-state">No saved drafts yet.</p>';
+    return;
   }
 
-  const inquiries = data.inquiries || [];
+  draftList.innerHTML = recent.map((draft) => `
+    <article class="admin-recent-item">
+      <div>
+        <span class="eyebrow">${escapeHtml(draft.platform || 'Platform')} · ${escapeHtml(draft.account || 'Account')}</span>
+        <strong>${escapeHtml(draft.label || 'Saved Draft')}</strong>
+        <p>${escapeHtml(draft.text || 'No draft text.')}</p>
+      </div>
+      <div class="admin-recent-meta">
+        <span>${escapeHtml(draft.status || 'draft')}</span>
+        <span>${escapeHtml(formatDate(draft.createdAt))}</span>
+      </div>
+    </article>
+  `).join('');
+};
+
+const loadAdminSummary = async () => {
+  recentList.innerHTML = '<p class="empty-state">Loading recent inquiries...</p>';
+  draftList.innerHTML = '<p class="empty-state">Loading saved drafts...</p>';
+
+  const headers = {
+    'X-Admin-Token': adminToken,
+  };
+
+  const [inquiryResponse, draftResponse] = await Promise.all([
+    fetch('/api/inquiries', { headers }),
+    fetch('/api/social-drafts', { headers }),
+  ]);
+
+  const inquiryData = await inquiryResponse.json().catch(() => ({}));
+  if (!inquiryResponse.ok || !inquiryData.ok) {
+    throw new Error(inquiryData.error || 'Admin summary could not be loaded.');
+  }
+
+  const draftData = await draftResponse.json().catch(() => ({}));
+  if (!draftResponse.ok || !draftData.ok) {
+    throw new Error(draftData.error || 'Draft summary could not be loaded.');
+  }
+
+  const inquiries = inquiryData.inquiries || [];
+  const drafts = draftData.drafts || [];
+
   totalNode.textContent = String(inquiries.length);
   newNode.textContent = String(inquiries.filter((inquiry) => (inquiry.status || 'new') === 'new').length);
+  totalDraftsNode.textContent = String(drafts.length);
+  approvedDraftsNode.textContent = String(drafts.filter((draft) => (draft.status || 'draft') === 'approved').length);
+  postedDraftsNode.textContent = String(drafts.filter((draft) => (draft.status || 'draft') === 'posted').length);
   renderRecent(inquiries);
+  renderRecentDrafts(drafts);
 };
 
 const unlockAdminHome = async (token) => {

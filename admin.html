@@ -9,7 +9,7 @@
       name="description"
       content="Private Loom Logic admin home for inquiries, social drafts, and operating links."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260520-inquiry-notes" />
+    <link rel="stylesheet" href="./styles.css?v=20260520-admin-drafts" />
   </head>
   <body class="admin-body">
     <header class="site-header">
@@ -80,6 +80,21 @@
           <strong>2</strong>
           <p>Inquiry Desk and Social Studio are protected by the same backend passcode.</p>
         </article>
+        <article class="admin-card">
+          <span class="eyebrow">Saved Drafts</span>
+          <strong data-total-drafts>--</strong>
+          <p>Manual-post content drafts saved from Social Studio.</p>
+        </article>
+        <article class="admin-card">
+          <span class="eyebrow">Approved</span>
+          <strong data-approved-drafts>--</strong>
+          <p>Drafts approved for manual publishing.</p>
+        </article>
+        <article class="admin-card">
+          <span class="eyebrow">Posted</span>
+          <strong data-posted-drafts>--</strong>
+          <p>Drafts already marked as posted.</p>
+        </article>
       </section>
 
       <section class="admin-home-actions" aria-label="Admin tools">
@@ -107,9 +122,22 @@
           <p class="empty-state">Loading recent inquiries...</p>
         </div>
       </section>
+
+      <section class="admin-panel recent-activity-panel">
+        <div class="inquiry-desk-head">
+          <div>
+            <span class="eyebrow">Content Pipeline</span>
+            <h2>Latest saved drafts</h2>
+          </div>
+          <a class="secondary-action" href="./social-studio.html#library">Open Library</a>
+        </div>
+        <div class="admin-recent-list" data-admin-draft-list>
+          <p class="empty-state">Loading saved drafts...</p>
+        </div>
+      </section>
     </main>
 
-    <script src="./admin-auth.js?v=20260520-admin-home"></script>
-    <script src="./admin-home.js?v=20260520-admin-home"></script>
+    <script src="./admin-auth.js?v=20260520-admin-drafts"></script>
+    <script src="./admin-home.js?v=20260520-admin-drafts"></script>
   </body>
 </html>
