@@ -7,7 +7,19 @@ const listNode = document.querySelector('[data-inquiry-list]');
 const refreshButton = document.querySelector('[data-refresh-inquiries]');
 const lockButton = document.querySelector('[data-lock-inquiries]');
 
-let adminToken = auth.getSavedAdminToken();
+let adminToken = '';
+
+const lockDesk = () => {
+  adminToken = '';
+  desk.hidden = true;
+  desk.setAttribute('aria-hidden', 'true');
+  desk.style.display = 'none';
+  loginPanel.hidden = false;
+  loginPanel.removeAttribute('aria-hidden');
+  loginPanel.style.display = '';
+};
+
+lockDesk();
 
 const setStatus = (message, success = false) => {
   statusNode.textContent = message;
@@ -86,7 +98,11 @@ const unlockDesk = async (token) => {
   adminToken = token;
   auth.saveAdminToken(token);
   loginPanel.hidden = true;
+  loginPanel.setAttribute('aria-hidden', 'true');
+  loginPanel.style.display = 'none';
   desk.hidden = false;
+  desk.removeAttribute('aria-hidden');
+  desk.style.display = '';
   await loadInquiries();
 };
 
@@ -100,6 +116,7 @@ loginForm.addEventListener('submit', async (event) => {
     await unlockDesk(token);
   } catch (error) {
     auth.clearAdminToken();
+    lockDesk();
     setStatus(error.message || 'Admin access failed.');
   }
 });
@@ -114,19 +131,7 @@ refreshButton.addEventListener('click', async () => {
 
 lockButton.addEventListener('click', () => {
   auth.clearAdminToken();
-  adminToken = '';
-  desk.hidden = true;
-  loginPanel.hidden = false;
+  lockDesk();
   loginForm.reset();
   setStatus('Locked. Enter the admin passcode to view inquiries.');
 });
-
-if (adminToken) {
-  unlockDesk(adminToken).catch(() => {
-    auth.clearAdminToken();
-    adminToken = '';
-    loginPanel.hidden = false;
-    desk.hidden = true;
-    setStatus('Session expired. Enter the admin passcode again.');
-  });
-}

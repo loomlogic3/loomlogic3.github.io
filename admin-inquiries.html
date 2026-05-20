@@ -9,7 +9,7 @@
       name="description"
       content="Private Loom Logic inquiry viewer for reviewing website project requests."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260520-admin-fix" />
+    <link rel="stylesheet" href="./styles.css?v=20260520-admin-lock2" />
   </head>
   <body class="admin-body inquiry-admin-body">
     <header class="site-header">
@@ -57,7 +57,13 @@
         </form>
       </section>
 
-      <section class="admin-panel inquiry-desk-panel" data-inquiry-desk hidden>
+      <section
+        class="admin-panel inquiry-desk-panel"
+        data-inquiry-desk
+        hidden
+        style="display: none;"
+        aria-hidden="true"
+      >
         <div class="inquiry-desk-head">
           <div>
             <span class="eyebrow">Recent Inquiries</span>
@@ -72,7 +78,7 @@
       </section>
     </main>
 
-    <script src="./admin-auth.js?v=20260520-admin-fix"></script>
-    <script src="./admin-inquiries.js?v=20260520-admin-fix"></script>
+    <script src="./admin-auth.js?v=20260520-admin-lock2"></script>
+    <script src="./admin-inquiries.js?v=20260520-admin-lock2"></script>
   </body>
 </html>

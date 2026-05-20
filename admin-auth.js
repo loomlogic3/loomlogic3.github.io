@@ -1,6 +1,6 @@
 const ADMIN_TOKEN_KEY = 'loomlogic_admin_token';
 
-const getSavedAdminToken = () => sessionStorage.getItem(ADMIN_TOKEN_KEY) || '';
+const getSavedAdminToken = () => '';
 
 const saveAdminToken = (token) => {
   sessionStorage.setItem(ADMIN_TOKEN_KEY, token);

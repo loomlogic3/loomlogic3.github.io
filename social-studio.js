@@ -9,6 +9,17 @@ const privateStudio = document.querySelector('[data-studio-private]');
 const studioLoginForm = document.querySelector('[data-studio-login-form]');
 const studioAuthStatus = document.querySelector('[data-studio-auth-status]');
 
+const lockStudio = () => {
+  privateStudio.hidden = true;
+  privateStudio.setAttribute('aria-hidden', 'true');
+  privateStudio.style.display = 'none';
+  adminGate.hidden = false;
+  adminGate.removeAttribute('aria-hidden');
+  adminGate.style.display = '';
+};
+
+lockStudio();
+
 const setStudioAuthStatus = (message, success = false) => {
   studioAuthStatus.textContent = message;
   studioAuthStatus.classList.toggle('is-success', success);
@@ -19,7 +30,12 @@ const unlockStudio = async (token) => {
   await auth.verifyAdminToken(token);
   auth.saveAdminToken(token);
   adminGate.hidden = true;
+  adminGate.setAttribute('aria-hidden', 'true');
+  adminGate.style.display = 'none';
   privateStudio.hidden = false;
+  privateStudio.removeAttribute('aria-hidden');
+  privateStudio.style.display = '';
+  setStudioAuthStatus('Unlocked.', true);
 };
 
 studioLoginForm.addEventListener('submit', async (event) => {
@@ -32,19 +48,10 @@ studioLoginForm.addEventListener('submit', async (event) => {
     await unlockStudio(token);
   } catch (error) {
     auth.clearAdminToken();
+    lockStudio();
     setStudioAuthStatus(error.message || 'Admin access failed.');
   }
 });
-
-const savedAdminToken = auth.getSavedAdminToken();
-if (savedAdminToken) {
-  unlockStudio(savedAdminToken).catch(() => {
-    auth.clearAdminToken();
-    privateStudio.hidden = true;
-    adminGate.hidden = false;
-    setStudioAuthStatus('Session expired. Enter the admin passcode again.');
-  });
-}
 
 const accountVoices = {
   business: {
