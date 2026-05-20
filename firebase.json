@@ -18,6 +18,13 @@
           "functionId": "submitInquiry",
           "region": "us-central1"
         }
+      },
+      {
+        "source": "/api/admin/verify",
+        "function": {
+          "functionId": "verifyAdmin",
+          "region": "us-central1"
+        }
       }
     ]
   }

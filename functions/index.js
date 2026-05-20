@@ -31,9 +31,85 @@ const applyCors = (req, res) => {
     res.set('Access-Control-Allow-Origin', origin);
   }
   res.set('Vary', 'Origin');
-  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.set('Access-Control-Allow-Headers', 'Content-Type');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type, X-Admin-Token');
 };
+
+const getAdminToken = (req) => {
+  const header = String(req.headers.authorization || '');
+  if (header.toLowerCase().startsWith('bearer ')) {
+    return header.slice(7).trim();
+  }
+  return String(req.headers['x-admin-token'] || '').trim();
+};
+
+const toIsoDate = (value) => {
+  if (!value) return null;
+  if (typeof value.toDate === 'function') return value.toDate().toISOString();
+  return null;
+};
+
+const isAdminAuthorized = (req) => {
+  const configuredToken = String(process.env.ADMIN_VIEWER_TOKEN || '').trim();
+  if (!configuredToken) return { ok: false, status: 503, error: 'Admin access is not configured.' };
+  if (getAdminToken(req) !== configuredToken) return { ok: false, status: 401, error: 'Unauthorized' };
+  return { ok: true };
+};
+
+const listInquiries = async (req, res) => {
+  const auth = isAdminAuthorized(req);
+  if (!auth.ok) {
+    res.status(auth.status).json({ ok: false, error: auth.error });
+    return;
+  }
+
+  const snapshot = await db
+    .collection('inquiries')
+    .orderBy('createdAt', 'desc')
+    .limit(40)
+    .get();
+
+  const inquiries = snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      name: data.name || '',
+      email: data.email || '',
+      projectType: data.projectType || '',
+      budget: data.budget || '',
+      message: data.message || '',
+      source: data.source || '',
+      status: data.status || 'new',
+      createdAt: toIsoDate(data.createdAt),
+    };
+  });
+
+  res.status(200).json({ ok: true, inquiries });
+};
+
+const functionOptions = { region: 'us-central1', secrets: ['ADMIN_VIEWER_TOKEN'] };
+
+exports.verifyAdmin = onRequest(functionOptions, (req, res) => {
+  applyCors(req, res);
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  if (req.method !== 'POST') {
+    res.status(405).json({ ok: false, error: 'Method not allowed' });
+    return;
+  }
+
+  const auth = isAdminAuthorized(req);
+  if (!auth.ok) {
+    res.status(auth.status).json({ ok: false, error: auth.error });
+    return;
+  }
+
+  res.status(200).json({ ok: true });
+});
 
 const checkRateLimit = async (key) => {
   const ref = db.collection('rateLimits').doc(`inquiry_${key}`);
@@ -54,11 +130,21 @@ const checkRateLimit = async (key) => {
   return result;
 };
 
-exports.submitInquiry = onRequest({ region: 'us-central1' }, async (req, res) => {
+exports.submitInquiry = onRequest(functionOptions, async (req, res) => {
   applyCors(req, res);
 
   if (req.method === 'OPTIONS') {
     res.status(204).send('');
+    return;
+  }
+
+  if (req.method === 'GET') {
+    try {
+      await listInquiries(req, res);
+    } catch (error) {
+      console.error('Inquiry list failed', error && error.message ? error.message : error);
+      res.status(500).json({ ok: false, error: 'Inquiries could not be loaded.' });
+    }
     return;
   }
 

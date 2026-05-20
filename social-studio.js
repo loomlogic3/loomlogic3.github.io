@@ -3,6 +3,48 @@ const socialResults = document.querySelector('[data-social-results]');
 const socialSummary = document.querySelector('[data-social-summary]');
 const draftGrid = document.querySelector('[data-draft-grid]');
 const clearButton = document.querySelector('[data-clear-social]');
+const auth = window.loomAdminAuth;
+const adminGate = document.querySelector('[data-admin-gate]');
+const privateStudio = document.querySelector('[data-studio-private]');
+const studioLoginForm = document.querySelector('[data-studio-login-form]');
+const studioAuthStatus = document.querySelector('[data-studio-auth-status]');
+
+const setStudioAuthStatus = (message, success = false) => {
+  studioAuthStatus.textContent = message;
+  studioAuthStatus.classList.toggle('is-success', success);
+};
+
+const unlockStudio = async (token) => {
+  setStudioAuthStatus('Checking passcode...');
+  await auth.verifyAdminToken(token);
+  auth.saveAdminToken(token);
+  adminGate.hidden = true;
+  privateStudio.hidden = false;
+};
+
+studioLoginForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const formData = new FormData(studioLoginForm);
+  const token = String(formData.get('passcode') || '').trim();
+  if (!token) return;
+
+  try {
+    await unlockStudio(token);
+  } catch (error) {
+    auth.clearAdminToken();
+    setStudioAuthStatus(error.message || 'Admin access failed.');
+  }
+});
+
+const savedAdminToken = auth.getSavedAdminToken();
+if (savedAdminToken) {
+  unlockStudio(savedAdminToken).catch(() => {
+    auth.clearAdminToken();
+    privateStudio.hidden = true;
+    adminGate.hidden = false;
+    setStudioAuthStatus('Session expired. Enter the admin passcode again.');
+  });
+}
 
 const accountVoices = {
   business: {

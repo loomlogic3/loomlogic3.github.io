@@ -24,7 +24,34 @@
       </nav>
     </header>
 
-    <main class="studio-shell">
+    <section class="admin-access-gate" data-admin-gate>
+      <div class="admin-panel admin-gate-card">
+        <span class="eyebrow">Private Workspace</span>
+        <h1>Admin access required</h1>
+        <p>
+          Social Studio is a private drafting workspace. Enter the admin passcode to continue.
+        </p>
+        <form class="inquiry-admin-login" data-studio-login-form>
+          <label for="studio-passcode">Passcode</label>
+          <div class="inquiry-admin-login-row">
+            <input
+              id="studio-passcode"
+              name="passcode"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Enter admin passcode"
+              required
+            />
+            <button class="primary-action" type="submit">Unlock</button>
+          </div>
+          <p class="form-note" data-studio-auth-status>
+            The passcode is verified by the Firebase backend.
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <main class="studio-shell" data-studio-private hidden>
       <section class="studio-hero studio-panel">
         <div>
           <span class="eyebrow">Private Workspace</span>
@@ -148,6 +175,7 @@
       </section>
     </main>
 
+    <script src="./admin-auth.js?v=20260519-admin-auth" defer></script>
     <script src="./social-studio.js?v=20260519-social-studio" defer></script>
   </body>
 </html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Loom Logic Inquiry Desk</title>
+    <meta
+      name="description"
+      content="Private Loom Logic inquiry viewer for reviewing website project requests."
+    />
+    <link rel="stylesheet" href="./styles.css?v=20260519-inquiry-admin" />
+  </head>
+  <body class="admin-body inquiry-admin-body">
+    <header class="site-header">
+      <a class="brand-lockup" href="./index.html" aria-label="Loom Logic home">
+        <img src="./assets/loom-logic-icon.png" alt="Loom Logic logo" />
+        <span>Loom Logic</span>
+      </a>
+      <nav aria-label="Inquiry desk navigation">
+        <a href="./index.html">Public Site</a>
+        <a href="./social-studio.html">Social Studio</a>
+      </nav>
+    </header>
+
+    <main class="admin-shell inquiry-admin-shell">
+      <section class="admin-hero inquiry-admin-hero">
+        <span class="eyebrow">Private Workspace</span>
+        <h1>Inquiry Desk</h1>
+        <p>
+          Review project inquiries submitted through the Loom Logic professional website. The passcode
+          is checked by the Firebase backend before any inquiry data is returned.
+        </p>
+      </section>
+
+      <section class="admin-panel inquiry-login-panel" data-admin-login-panel>
+        <div class="studio-panel-head">
+          <span class="eyebrow">Admin Access</span>
+          <strong>Enter your inquiry viewer passcode.</strong>
+        </div>
+        <form class="inquiry-admin-login" data-admin-login-form>
+          <label for="admin-passcode">Passcode</label>
+          <div class="inquiry-admin-login-row">
+            <input
+              id="admin-passcode"
+              name="passcode"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Enter admin passcode"
+              required
+            />
+            <button class="primary-action" type="submit">Unlock</button>
+          </div>
+          <p class="form-note" data-admin-status>
+            No inquiry data is loaded until the backend verifies this passcode.
+          </p>
+        </form>
+      </section>
+
+      <section class="admin-panel inquiry-desk-panel" data-inquiry-desk hidden>
+        <div class="inquiry-desk-head">
+          <div>
+            <span class="eyebrow">Recent Inquiries</span>
+            <h2>Client requests</h2>
+          </div>
+          <div class="inquiry-desk-actions">
+            <button class="secondary-action" type="button" data-refresh-inquiries>Refresh</button>
+            <button class="secondary-action" type="button" data-lock-inquiries>Lock</button>
+          </div>
+        </div>
+        <div class="inquiry-list" data-inquiry-list></div>
+      </section>
+    </main>
+
+    <script src="./admin-auth.js?v=20260519-admin-auth"></script>
+    <script src="./admin-inquiries.js?v=20260519-inquiry-admin"></script>
+  </body>
+</html>
