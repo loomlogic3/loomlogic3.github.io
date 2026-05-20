@@ -1508,6 +1508,35 @@ p {
   margin: 0 0 16px;
 }
 
+.admin-search-field {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 14px;
+}
+
+.admin-search-field span {
+  color: #63d7c6;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-search-field input {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(3, 11, 22, 0.58);
+  color: #e6eef8;
+  font: inherit;
+  outline: none;
+}
+
+.admin-search-field input:focus {
+  border-color: rgba(99, 215, 198, 0.72);
+  box-shadow: 0 0 0 3px rgba(99, 215, 198, 0.12);
+}
+
 .status-chip {
   border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 999px;

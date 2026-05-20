@@ -9,7 +9,7 @@
       name="description"
       content="Private-facing Loom Logic social content studio for safe draft creation and review."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260520-draft-library" />
+    <link rel="stylesheet" href="./styles.css?v=20260520-search" />
   </head>
   <body class="studio-body">
     <header class="site-header">
@@ -183,6 +183,15 @@
           <h2>Saved social drafts.</h2>
           <p>Manual-post only. Approve, post, or archive after human review.</p>
         </div>
+        <label class="admin-search-field" for="draft-search">
+          <span>Search drafts</span>
+          <input
+            id="draft-search"
+            type="search"
+            data-draft-search
+            placeholder="Search platform, account, topic, text, or status"
+          />
+        </label>
         <div class="inquiry-filter-bar" aria-label="Filter drafts by status">
           <button class="status-chip is-active" type="button" data-draft-filter="all">all</button>
           <button class="status-chip" type="button" data-draft-filter="draft">draft</button>
@@ -197,7 +206,7 @@
       </section>
     </main>
 
-    <script src="./admin-auth.js?v=20260520-draft-library" defer></script>
-    <script src="./social-studio.js?v=20260520-draft-library" defer></script>
+    <script src="./admin-auth.js?v=20260520-search" defer></script>
+    <script src="./social-studio.js?v=20260520-search" defer></script>
   </body>
 </html>

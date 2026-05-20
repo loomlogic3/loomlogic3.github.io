@@ -7,10 +7,12 @@ const listNode = document.querySelector('[data-inquiry-list]');
 const refreshButton = document.querySelector('[data-refresh-inquiries]');
 const lockButton = document.querySelector('[data-lock-inquiries]');
 const filterButtons = document.querySelectorAll('[data-inquiry-filter]');
+const searchInput = document.querySelector('[data-inquiry-search]');
 
 let adminToken = '';
 const inquiryStatuses = ['new', 'reviewed', 'contacted', 'closed'];
 let activeFilter = 'all';
+let activeSearch = '';
 let currentInquiries = [];
 
 const lockDesk = () => {
@@ -45,13 +47,29 @@ const escapeHtml = (value) => String(value || '')
   .replace(/"/g, '&quot;')
   .replace(/'/g, '&#039;');
 
+const matchesSearch = (inquiry) => {
+  if (!activeSearch) return true;
+  const haystack = [
+    inquiry.name,
+    inquiry.email,
+    inquiry.projectType,
+    inquiry.budget,
+    inquiry.message,
+    inquiry.adminNote,
+    inquiry.source,
+    inquiry.status,
+  ].join(' ').toLowerCase();
+  return haystack.includes(activeSearch);
+};
+
 const renderInquiries = (inquiries) => {
-  const visibleInquiries = activeFilter === 'all'
-    ? inquiries
-    : inquiries.filter((inquiry) => (inquiry.status || 'new') === activeFilter);
+  const visibleInquiries = inquiries.filter((inquiry) => {
+    const statusMatches = activeFilter === 'all' || (inquiry.status || 'new') === activeFilter;
+    return statusMatches && matchesSearch(inquiry);
+  });
 
   if (!visibleInquiries.length) {
-    listNode.innerHTML = '<p class="empty-state">No inquiries yet.</p>';
+    listNode.innerHTML = '<p class="empty-state">No inquiries match this view.</p>';
     return;
   }
 
@@ -187,6 +205,11 @@ filterButtons.forEach((button) => {
   });
 });
 
+searchInput.addEventListener('input', () => {
+  activeSearch = searchInput.value.trim().toLowerCase();
+  renderInquiries(currentInquiries);
+});
+
 listNode.addEventListener('click', async (event) => {
   const button = event.target.closest('[data-inquiry-id][data-inquiry-status]');
   if (!button) return;
@@ -239,6 +262,8 @@ listNode.addEventListener('submit', async (event) => {
 
 lockButton.addEventListener('click', () => {
   auth.clearAdminToken();
+  activeSearch = '';
+  searchInput.value = '';
   lockDesk();
   loginForm.reset();
   setStatus('Locked. Enter the admin passcode to view inquiries.');

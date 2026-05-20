@@ -9,7 +9,7 @@
       name="description"
       content="Private Loom Logic inquiry viewer for reviewing website project requests."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260520-inquiry-notes" />
+    <link rel="stylesheet" href="./styles.css?v=20260520-search" />
   </head>
   <body class="admin-body inquiry-admin-body">
     <header class="site-header">
@@ -75,6 +75,15 @@
             <button class="secondary-action" type="button" data-lock-inquiries>Lock</button>
           </div>
         </div>
+        <label class="admin-search-field" for="inquiry-search">
+          <span>Search inquiries</span>
+          <input
+            id="inquiry-search"
+            type="search"
+            data-inquiry-search
+            placeholder="Search name, email, message, note, or status"
+          />
+        </label>
         <div class="inquiry-filter-bar" aria-label="Filter inquiries by status">
           <button class="status-chip is-active" type="button" data-inquiry-filter="all">all</button>
           <button class="status-chip" type="button" data-inquiry-filter="new">new</button>
@@ -86,7 +95,7 @@
       </section>
     </main>
 
-    <script src="./admin-auth.js?v=20260520-inquiry-notes"></script>
-    <script src="./admin-inquiries.js?v=20260520-inquiry-notes"></script>
+    <script src="./admin-auth.js?v=20260520-search"></script>
+    <script src="./admin-inquiries.js?v=20260520-search"></script>
   </body>
 </html>

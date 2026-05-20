@@ -6,6 +6,7 @@ const clearButton = document.querySelector('[data-clear-social]');
 const draftLibrary = document.querySelector('[data-draft-library]');
 const refreshDraftsButton = document.querySelector('[data-refresh-drafts]');
 const draftFilterButtons = document.querySelectorAll('[data-draft-filter]');
+const draftSearchInput = document.querySelector('[data-draft-search]');
 const auth = window.loomAdminAuth;
 const adminGate = document.querySelector('[data-admin-gate]');
 const privateStudio = document.querySelector('[data-studio-private]');
@@ -14,6 +15,7 @@ const studioAuthStatus = document.querySelector('[data-studio-auth-status]');
 const draftStatuses = ['draft', 'approved', 'posted', 'archived'];
 let adminToken = '';
 let activeDraftFilter = 'all';
+let activeDraftSearch = '';
 let savedDrafts = [];
 
 const lockStudio = () => {
@@ -277,13 +279,30 @@ const updateSavedDraftStatus = async (id, status) => {
   }
 };
 
+const draftMatchesSearch = (draft) => {
+  if (!activeDraftSearch) return true;
+  const haystack = [
+    draft.account,
+    draft.platform,
+    draft.goal,
+    draft.tone,
+    draft.topic,
+    draft.notes,
+    draft.label,
+    draft.text,
+    draft.status,
+  ].join(' ').toLowerCase();
+  return haystack.includes(activeDraftSearch);
+};
+
 const renderDraftLibrary = (drafts) => {
-  const visibleDrafts = activeDraftFilter === 'all'
-    ? drafts
-    : drafts.filter((draft) => (draft.status || 'draft') === activeDraftFilter);
+  const visibleDrafts = drafts.filter((draft) => {
+    const statusMatches = activeDraftFilter === 'all' || (draft.status || 'draft') === activeDraftFilter;
+    return statusMatches && draftMatchesSearch(draft);
+  });
 
   if (!visibleDrafts.length) {
-    draftLibrary.innerHTML = '<p class="empty-state">No saved drafts for this filter.</p>';
+    draftLibrary.innerHTML = '<p class="empty-state">No saved drafts match this view.</p>';
     return;
   }
 
@@ -377,6 +396,11 @@ draftFilterButtons.forEach((button) => {
     });
     renderDraftLibrary(savedDrafts);
   });
+});
+
+draftSearchInput.addEventListener('input', () => {
+  activeDraftSearch = draftSearchInput.value.trim().toLowerCase();
+  renderDraftLibrary(savedDrafts);
 });
 
 draftLibrary.addEventListener('click', async (event) => {
