@@ -339,7 +339,7 @@ const callGemini = async (message) => {
   const apiKey = String(process.env.GEMINI_API_KEY || '').trim();
   if (!apiKey) return null;
 
-  const model = clean(process.env.GEMINI_MODEL, 80) || 'gemini-3.5-flash';
+  const model = clean(process.env.GEMINI_MODEL, 80) || 'gemini-2.5-flash';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
   const response = await fetch(url, {
     method: 'POST',
