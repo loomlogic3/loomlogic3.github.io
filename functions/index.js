@@ -8,6 +8,8 @@ const db = getFirestore(app, 'default');
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
 const MAX_FIELD_LENGTH = 1200;
+const MAX_CHAT_MESSAGE_LENGTH = 900;
+const MAX_CHAT_REPLY_LENGTH = 900;
 const inquiryStatuses = new Set(['new', 'reviewed', 'contacted', 'closed']);
 const socialDraftStatuses = new Set(['draft', 'approved', 'posted', 'archived']);
 
@@ -20,6 +22,32 @@ const allowedOrigins = new Set([
 const clean = (value, maxLength = MAX_FIELD_LENGTH) => String(value || '').trim().slice(0, maxLength);
 
 const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+const assistantSystemPrompt = [
+  'You are Loom&Logic AI, the public website assistant for Loom Logic.',
+  'You help potential clients understand Loom Logic’s professional digital systems, automation dashboards, client intake systems, product prototypes, Web3 monitoring tools, and launch-ready content workflows.',
+  'You explain the brand philosophy: “Add power only after adding control.”',
+  'You are public-facing and must keep public website content separate from internal V2 trading controls.',
+  'You must not provide financial advice, promise profits, ask for private keys, reveal secrets, expose internal infrastructure, or control bots/wallets/trading systems.',
+  'You should guide interested clients to contact loomlogic3@gmail.com.',
+].join(' ');
+
+const assistantFallbackReply = (message) => {
+  const lower = String(message || '').toLowerCase();
+  if (lower.includes('private key') || lower.includes('seed phrase') || lower.includes('wallet') || lower.includes('trade')) {
+    return 'I’m a public information assistant for Loom Logic. I can explain public services and safety-first principles, but I cannot access private systems, wallets, trading controls, secrets, or live execution.';
+  }
+  if (lower.includes('contact') || lower.includes('email') || lower.includes('hire')) {
+    return 'You can contact Loom Logic at loomlogic3@gmail.com. Share your project goal, timeline, and what kind of system you want to build.';
+  }
+  if (lower.includes('v2') || lower.includes('public website')) {
+    return 'The public website is Loom Logic’s professional front door for clients. V2 is separate: it is an internal safety-first control plane, not a public trading promise or client money management service.';
+  }
+  if (lower.includes('safety') || lower.includes('control') || lower.includes('philosophy')) {
+    return 'Loom Logic’s philosophy is: “Add power only after adding control.” That means approval gates, clear boundaries, logs, review, and safer workflows come before automation.';
+  }
+  return 'Loom Logic builds professional business websites, automation dashboards, client intake systems, product prototypes, Web3 monitoring tools, and launch-ready content workflows. This assistant provides general information only, not financial advice.';
+};
 
 const getClientKey = (req) => {
   const forwarded = req.headers['x-forwarded-for'];
@@ -285,8 +313,9 @@ exports.manageSocialDrafts = onRequest(functionOptions, async (req, res) => {
   }
 });
 
-const checkRateLimit = async (key) => {
-  const ref = db.collection('rateLimits').doc(`inquiry_${key}`);
+const checkRateLimit = async (key, bucket = 'inquiry', maxPerWindow = MAX_PER_WINDOW) => {
+  const safeBucket = clean(bucket, 40).replace(/[^a-zA-Z0-9_-]/g, '') || 'general';
+  const ref = db.collection('rateLimits').doc(`${safeBucket}_${key}`);
   const now = Date.now();
   const result = await db.runTransaction(async (transaction) => {
     const snapshot = await transaction.get(ref);
@@ -299,10 +328,129 @@ const checkRateLimit = async (key) => {
       windowStart: expired ? now : windowStart,
       updatedAt: FieldValue.serverTimestamp(),
     }, { merge: true });
-    return count <= MAX_PER_WINDOW;
+    return count <= maxPerWindow;
   });
   return result;
 };
+
+const limitReply = (reply) => clean(reply, MAX_CHAT_REPLY_LENGTH);
+
+const callGemini = async (message) => {
+  const apiKey = String(process.env.GEMINI_API_KEY || '').trim();
+  if (!apiKey) return null;
+
+  const model = clean(process.env.GEMINI_MODEL, 80) || 'gemini-1.5-flash';
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      systemInstruction: {
+        parts: [{ text: assistantSystemPrompt }],
+      },
+      contents: [{
+        role: 'user',
+        parts: [{ text: message }],
+      }],
+      generationConfig: {
+        maxOutputTokens: 220,
+        temperature: 0.35,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Gemini request failed with ${response.status}`);
+  }
+
+  const data = await response.json();
+  return limitReply(data?.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join(' ') || '');
+};
+
+const callOllama = async (message) => {
+  if (String(process.env.AI_PROVIDER || '').toLowerCase() !== 'ollama') return null;
+
+  const baseUrl = clean(process.env.OLLAMA_BASE_URL, 180) || 'http://localhost:11434';
+  const model = clean(process.env.OLLAMA_MODEL, 80) || 'llama3.2';
+  const response = await fetch(`${baseUrl.replace(/\/$/, '')}/api/chat`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model,
+      stream: false,
+      messages: [
+        { role: 'system', content: assistantSystemPrompt },
+        { role: 'user', content: message },
+      ],
+      options: {
+        temperature: 0.35,
+        num_predict: 220,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Ollama request failed with ${response.status}`);
+  }
+
+  const data = await response.json();
+  return limitReply(data?.message?.content || '');
+};
+
+const aiFunctionOptions = { region: 'us-central1' };
+
+exports.aiChat = onRequest(aiFunctionOptions, async (req, res) => {
+  applyCors(req, res);
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  if (req.method !== 'POST') {
+    res.status(405).json({ ok: false, error: 'Method not allowed' });
+    return;
+  }
+
+  try {
+    const clientKey = getClientKey(req);
+    const allowed = await checkRateLimit(clientKey, 'ai_chat', 10);
+    if (!allowed) {
+      res.status(429).json({
+        ok: false,
+        reply: 'The assistant is receiving too many requests from this connection. Please try again later.',
+      });
+      return;
+    }
+
+    const message = clean(req.body?.message, MAX_CHAT_MESSAGE_LENGTH);
+    if (!message) {
+      res.status(400).json({ ok: false, error: 'Message is required.' });
+      return;
+    }
+
+    let reply = null;
+    try {
+      reply = await callOllama(message);
+      if (!reply) reply = await callGemini(message);
+    } catch (error) {
+      console.error('AI provider unavailable', error && error.message ? error.message : 'provider failed');
+    }
+
+    res.status(200).json({
+      ok: true,
+      reply: reply || assistantFallbackReply(message),
+      provider: reply ? (String(process.env.AI_PROVIDER || '').toLowerCase() || 'gemini') : 'fallback',
+    });
+  } catch (error) {
+    console.error('AI chat request failed', error && error.message ? error.message : error);
+    res.status(200).json({
+      ok: true,
+      reply: assistantFallbackReply(req.body?.message),
+      provider: 'fallback',
+    });
+  }
+});
 
 exports.submitInquiry = onRequest(functionOptions, async (req, res) => {
   applyCors(req, res);

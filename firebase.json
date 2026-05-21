@@ -32,6 +32,13 @@
           "functionId": "manageSocialDrafts",
           "region": "us-central1"
         }
+      },
+      {
+        "source": "/api/ai/chat",
+        "function": {
+          "functionId": "aiChat",
+          "region": "us-central1"
+        }
       }
     ]
   }
