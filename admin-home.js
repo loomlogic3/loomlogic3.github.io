@@ -12,8 +12,14 @@ const totalDraftsNode = document.querySelector('[data-total-drafts]');
 const approvedDraftsNode = document.querySelector('[data-approved-drafts]');
 const postedDraftsNode = document.querySelector('[data-posted-drafts]');
 const draftList = document.querySelector('[data-admin-draft-list]');
+const needsActionNode = document.querySelector('[data-needs-action-count]');
+const inquiryStatusSummaryNode = document.querySelector('[data-inquiry-status-summary]');
+const draftStatusSummaryNode = document.querySelector('[data-draft-status-summary]');
+const refreshStampNode = document.querySelector('[data-admin-refresh-stamp]');
 
 let adminToken = '';
+const inquiryStatuses = ['new', 'reviewed', 'contacted', 'closed'];
+const draftStatuses = ['draft', 'approved', 'posted', 'archived'];
 
 const escapeHtml = (value) => String(value || '')
   .replace(/&/g, '&amp;')
@@ -33,6 +39,20 @@ const formatDate = (value) => {
 const setStatus = (message, success = false) => {
   statusNode.textContent = message;
   statusNode.classList.toggle('is-success', success);
+};
+
+const countByStatus = (items, statuses, fallbackStatus) => statuses.reduce((counts, status) => {
+  counts[status] = items.filter((item) => (item.status || fallbackStatus) === status).length;
+  return counts;
+}, {});
+
+const renderStatusSummary = (node, counts, statuses) => {
+  node.innerHTML = statuses.map((status) => `
+    <span>
+      <strong>${escapeHtml(counts[status])}</strong>
+      ${escapeHtml(status)}
+    </span>
+  `).join('');
 };
 
 const lockAdminHome = () => {
@@ -123,12 +143,18 @@ const loadAdminSummary = async () => {
 
   const inquiries = inquiryData.inquiries || [];
   const drafts = draftData.drafts || [];
+  const inquiryCounts = countByStatus(inquiries, inquiryStatuses, 'new');
+  const draftCounts = countByStatus(drafts, draftStatuses, 'draft');
 
   totalNode.textContent = String(inquiries.length);
-  newNode.textContent = String(inquiries.filter((inquiry) => (inquiry.status || 'new') === 'new').length);
+  newNode.textContent = String(inquiryCounts.new);
   totalDraftsNode.textContent = String(drafts.length);
-  approvedDraftsNode.textContent = String(drafts.filter((draft) => (draft.status || 'draft') === 'approved').length);
-  postedDraftsNode.textContent = String(drafts.filter((draft) => (draft.status || 'draft') === 'posted').length);
+  approvedDraftsNode.textContent = String(draftCounts.approved);
+  postedDraftsNode.textContent = String(draftCounts.posted);
+  needsActionNode.textContent = String(inquiryCounts.new + draftCounts.draft);
+  renderStatusSummary(inquiryStatusSummaryNode, inquiryCounts, inquiryStatuses);
+  renderStatusSummary(draftStatusSummaryNode, draftCounts, draftStatuses);
+  refreshStampNode.textContent = `Updated ${formatDate(new Date().toISOString())}`;
   renderRecent(inquiries);
   renderRecentDrafts(drafts);
 };

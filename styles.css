@@ -1269,6 +1269,75 @@ p {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.admin-snapshot-panel {
+  border-color: rgba(99, 215, 198, 0.2);
+  background:
+    linear-gradient(145deg, rgba(8, 17, 31, 0.78), rgba(15, 23, 42, 0.62)),
+    rgba(8, 17, 31, 0.72);
+}
+
+.admin-refresh-stamp {
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.admin-snapshot-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 0.85fr 1fr 1fr;
+  margin-top: 18px;
+}
+
+.admin-snapshot-card {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(3, 11, 22, 0.46);
+}
+
+.admin-snapshot-card.is-priority {
+  border-color: rgba(16, 185, 129, 0.42);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.18), transparent 36%),
+    rgba(3, 11, 22, 0.58);
+}
+
+.admin-snapshot-card > strong {
+  display: block;
+  margin-top: 8px;
+  color: #f8fbff;
+  font-size: clamp(36px, 6vw, 58px);
+  line-height: 0.95;
+}
+
+.admin-status-row {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.admin-status-row span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid rgba(99, 215, 198, 0.14);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #c9d7ea;
+  background: rgba(8, 17, 31, 0.52);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.admin-status-row strong {
+  color: #f8fbff;
+  font-size: 18px;
+}
+
 .admin-tool-card {
   border: 1px solid rgba(99, 215, 198, 0.18);
   border-radius: 20px;
@@ -1664,6 +1733,7 @@ p {
   .admin-grid,
   .admin-home-grid,
   .admin-home-actions,
+  .admin-snapshot-grid,
   .admin-draft-grid,
   .admin-draft-form {
     grid-template-columns: 1fr;

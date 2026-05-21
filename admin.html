@@ -9,7 +9,7 @@
       name="description"
       content="Private Loom Logic admin home for inquiries, social drafts, and operating links."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260520-admin-drafts" />
+    <link rel="stylesheet" href="./styles.css?v=20260520-admin-snapshot" />
   </head>
   <body class="admin-body">
     <header class="site-header">
@@ -62,6 +62,35 @@
           </p>
         </div>
         <button class="secondary-action" type="button" data-admin-home-lock>Lock</button>
+      </section>
+
+      <section class="admin-panel admin-snapshot-panel" aria-label="Admin snapshot">
+        <div class="inquiry-desk-head">
+          <div>
+            <span class="eyebrow">Desk Snapshot</span>
+            <h2>What needs attention</h2>
+          </div>
+          <span class="admin-refresh-stamp" data-admin-refresh-stamp>Not loaded yet</span>
+        </div>
+        <div class="admin-snapshot-grid">
+          <article class="admin-snapshot-card is-priority">
+            <span class="eyebrow">Needs Action</span>
+            <strong data-needs-action-count>--</strong>
+            <p>New inquiries plus saved drafts still in draft status.</p>
+          </article>
+          <article class="admin-snapshot-card">
+            <span class="eyebrow">Inquiry Pipeline</span>
+            <div class="admin-status-row" data-inquiry-status-summary>
+              <span>Loading...</span>
+            </div>
+          </article>
+          <article class="admin-snapshot-card">
+            <span class="eyebrow">Content Pipeline</span>
+            <div class="admin-status-row" data-draft-status-summary>
+              <span>Loading...</span>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section class="admin-home-grid" aria-label="Admin summary">
@@ -137,7 +166,7 @@
       </section>
     </main>
 
-    <script src="./admin-auth.js?v=20260520-admin-drafts"></script>
-    <script src="./admin-home.js?v=20260520-admin-drafts"></script>
+    <script src="./admin-auth.js?v=20260520-admin-snapshot"></script>
+    <script src="./admin-home.js?v=20260520-admin-snapshot"></script>
   </body>
 </html>
