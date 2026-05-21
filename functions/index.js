@@ -397,7 +397,7 @@ const callOllama = async (message) => {
   return limitReply(data?.message?.content || '');
 };
 
-const aiFunctionOptions = { region: 'us-central1' };
+const aiFunctionOptions = { region: 'us-central1', secrets: ['GEMINI_API_KEY'] };
 
 exports.aiChat = onRequest(aiFunctionOptions, async (req, res) => {
   applyCors(req, res);
