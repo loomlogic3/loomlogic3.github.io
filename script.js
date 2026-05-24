@@ -13,15 +13,15 @@ const inquiryStatus = document.querySelector('[data-inquiry-status]');
 const fallbackReply = (message) => {
   const lower = message.toLowerCase();
   if (lower.includes('contact') || lower.includes('email')) {
-    return 'You can contact Loom Logic at loomlogic3@gmail.com. You can also follow @oromitayo12 and @loomlogic3 on X.';
+    return 'You can contact SynthThinkingSystems at loomlogic3@gmail.com. You can also follow @oromitayo12 and @loomlogic3 on X.';
   }
   if (lower.includes('v2') || lower.includes('public website')) {
-    return 'The public website is Loom Logic’s professional front door for clients. V2 is separate and remains an internal safety-first control plane.';
+    return 'The public website is SynthThinkingSystems’ professional front door for clients. SynthQuantEngine is separate and remains an internal safety-first control plane.';
   }
   if (lower.includes('safety') || lower.includes('control')) {
-    return 'Loom Logic’s philosophy is: Add power only after adding control. That means boundaries, approval, logs, and review come before automation.';
+    return 'SynthThinkingSystems’ philosophy is: Add power only after adding control. That means boundaries, approval, logs, and review come before automation.';
   }
-  return 'Loom Logic builds professional websites, automation dashboards, client intake systems, product prototypes, Web3 monitoring tools, and launch-ready content workflows. For project inquiries, contact loomlogic3@gmail.com.';
+  return 'SynthThinkingSystems builds professional websites, automation dashboards, client intake systems, product prototypes, Web3 monitoring tools, and launch-ready content workflows. For project inquiries, contact loomlogic3@gmail.com.';
 };
 
 const setChatOpen = (open) => {

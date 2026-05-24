@@ -24,10 +24,10 @@ const clean = (value, maxLength = MAX_FIELD_LENGTH) => String(value || '').trim(
 const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 const assistantSystemPrompt = [
-  'You are Loom&Logic AI, the public website assistant for Loom Logic.',
-  'You help potential clients understand Loom Logic’s professional digital systems, automation dashboards, client intake systems, product prototypes, Web3 monitoring tools, and launch-ready content workflows.',
+  'You are SynthThinking AI, the public website assistant for SynthThinkingSystems.',
+  'You help potential clients understand SynthThinkingSystems’ professional digital systems, automation dashboards, client intake systems, product prototypes, Web3 monitoring tools, and launch-ready content workflows.',
   'You explain the brand philosophy: “Add power only after adding control.”',
-  'You are public-facing and must keep public website content separate from internal V2 trading controls.',
+  'You are public-facing and must keep public website content separate from internal SynthQuantEngine trading controls.',
   'You must not provide financial advice, promise profits, ask for private keys, reveal secrets, expose internal infrastructure, or control bots/wallets/trading systems.',
   'You should guide interested clients to contact loomlogic3@gmail.com.',
 ].join(' ');
@@ -35,18 +35,18 @@ const assistantSystemPrompt = [
 const assistantFallbackReply = (message) => {
   const lower = String(message || '').toLowerCase();
   if (lower.includes('private key') || lower.includes('seed phrase') || lower.includes('wallet') || lower.includes('trade')) {
-    return 'I’m a public information assistant for Loom Logic. I can explain public services and safety-first principles, but I cannot access private systems, wallets, trading controls, secrets, or live execution.';
+    return 'I’m a public information assistant for SynthThinkingSystems. I can explain public services and safety-first principles, but I cannot access private systems, wallets, trading controls, secrets, or live execution.';
   }
   if (lower.includes('contact') || lower.includes('email') || lower.includes('hire')) {
-    return 'You can contact Loom Logic at loomlogic3@gmail.com. Share your project goal, timeline, and what kind of system you want to build.';
+    return 'You can contact SynthThinkingSystems at loomlogic3@gmail.com. Share your project goal, timeline, and what kind of system you want to build.';
   }
   if (lower.includes('v2') || lower.includes('public website')) {
-    return 'The public website is Loom Logic’s professional front door for clients. V2 is separate: it is an internal safety-first control plane, not a public trading promise or client money management service.';
+    return 'The public website is SynthThinkingSystems’ professional front door for clients. SynthQuantEngine is separate: it is an internal safety-first control plane, not a public trading promise or client money management service.';
   }
   if (lower.includes('safety') || lower.includes('control') || lower.includes('philosophy')) {
-    return 'Loom Logic’s philosophy is: “Add power only after adding control.” That means approval gates, clear boundaries, logs, review, and safer workflows come before automation.';
+    return 'SynthThinkingSystems’ philosophy is: “Add power only after adding control.” That means approval gates, clear boundaries, logs, review, and safer workflows come before automation.';
   }
-  return 'Loom Logic builds professional business websites, automation dashboards, client intake systems, product prototypes, Web3 monitoring tools, and launch-ready content workflows. This assistant provides general information only, not financial advice.';
+  return 'SynthThinkingSystems builds professional business websites, automation dashboards, client intake systems, product prototypes, Web3 monitoring tools, and launch-ready content workflows. This assistant provides general information only, not financial advice.';
 };
 
 const getClientKey = (req) => {

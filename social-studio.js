@@ -67,7 +67,7 @@ studioLoginForm.addEventListener('submit', async (event) => {
 
 const accountVoices = {
   business: {
-    name: 'Loom Logic business',
+    name: 'SynthThinkingSystems business',
     handle: '@loomlogic3',
     perspective: 'we',
     focus: 'professional digital systems, client trust, automation, websites, and safe Web3 monitoring',
@@ -85,14 +85,14 @@ const accountVoices = {
     focus: 'creative platforms, Yoruba craftsmanship, Osogbo Adire, Batik, artisans, and collectors',
   },
   legacy: {
-    name: 'Legacy',
-    handle: 'Legacy',
+    name: 'SynthQuantEngine Legacy',
+    handle: 'SynthQuantEngine Legacy',
     perspective: 'we',
     focus: 'learning, monitoring, operational history, and responsible Web3 system communication',
   },
   v2: {
-    name: 'V2',
-    handle: 'V2',
+    name: 'SynthQuantEngine',
+    handle: 'SynthQuantEngine',
     perspective: 'we',
     focus: 'approval gates, read-only visibility, safety-first controls, and careful automation',
   },
@@ -132,7 +132,7 @@ const trimToLimit = (text, limit) => {
 const buildHashtags = (account, platform) => {
   const base = account === 'indigo'
     ? ['#IndigoArtHub', '#CreativeTech', '#AfricanArt']
-    : ['#LoomLogic', '#DigitalSystems', '#Automation'];
+    : ['#SynthThinkingSystems', '#DigitalSystems', '#Automation'];
 
   if (platform === 'LinkedIn') return base.slice(0, 2).join(' ');
   return base.join(' ');
@@ -148,15 +148,15 @@ const buildDrafts = ({ account, platform, goal, tone, topic, notes }) => {
   const drafts = [
     {
       label: 'Trust Builder',
-      text: `${perspectiveLead} ${voice.focus} around one principle: add power only after adding control. ${topic}. ${safeNotes} If your business needs a clearer digital system, start the conversation with Loom Logic. ${hashtags}`,
+      text: `${perspectiveLead} ${voice.focus} around one principle: add power only after adding control. ${topic}. ${safeNotes} If your business needs a clearer digital system, start the conversation with SynthThinkingSystems. ${hashtags}`,
     },
     {
       label: 'Client Clarity',
-      text: `${voice.name} focuses on ${goal.toLowerCase()}: ${topic}. The goal is not hype. It is a practical system people can understand, review, and trust. ${safeNotes} Contact Loom Logic when you are ready to scope a build. ${hashtags}`,
+      text: `${voice.name} focuses on ${goal.toLowerCase()}: ${topic}. The goal is not hype. It is a practical system people can understand, review, and trust. ${safeNotes} Contact SynthThinkingSystems when you are ready to scope a build. ${hashtags}`,
     },
     {
       label: 'Short Post',
-      text: `${topic}. At Loom Logic, the rule is simple: add power only after adding control. Clear systems. Safer workflows. Better client trust. ${hashtags}`,
+      text: `${topic}. At SynthThinkingSystems, the rule is simple: add power only after adding control. Clear systems. Safer workflows. Better client trust. ${hashtags}`,
     },
   ];
 

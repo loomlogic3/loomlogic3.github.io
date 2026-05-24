@@ -1,6 +1,6 @@
-# Loom Logic Professional Site
+# SynthThinkingSystems Professional Site
 
-Public GitHub Pages site for Loom Logic.
+Public GitHub Pages site for SynthThinkingSystems.
 
 This repository contains only the static public website:
 
@@ -9,7 +9,7 @@ This repository contains only the static public website:
 - `script.js`
 - `assets/`
 
-Private admin tools, backend APIs, environment files, local draft data, and internal V2 controls are intentionally excluded.
+Private admin tools, backend APIs, environment files, local draft data, and internal SynthQuantEngine controls are intentionally excluded.
 
 Local preview:
 
