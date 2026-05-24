@@ -164,6 +164,20 @@ p {
   font-size: 18px;
 }
 
+.hero-content .brand-transition-note {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 690px;
+  border: 1px solid rgba(99, 215, 198, 0.2);
+  border-radius: 999px;
+  padding: 9px 12px;
+  color: #b9f5e8;
+  background: rgba(16, 185, 129, 0.08);
+  font-size: 13px;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
