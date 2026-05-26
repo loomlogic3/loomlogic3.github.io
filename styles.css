@@ -58,16 +58,17 @@ button {
 .brand-lockup {
   display: flex;
   align-items: center;
-  gap: 12px;
+  width: clamp(190px, 22vw, 260px);
   min-width: 0;
   font-weight: 800;
 }
 
 .brand-lockup img {
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
-  object-fit: cover;
+  width: 100%;
+  height: 52px;
+  border-radius: 0;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .site-header nav {
@@ -277,12 +278,52 @@ p {
   padding: 0;
 }
 
+.system-media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.system-media::after {
+  content: "Open";
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  border: 1px solid rgba(185, 245, 232, 0.28);
+  border-radius: 999px;
+  padding: 7px 11px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04)),
+    rgba(5, 13, 25, 0.72);
+  color: #eafff9;
+  font-size: 11px;
+  font-weight: 950;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  backdrop-filter: blur(14px) saturate(145%);
+  -webkit-backdrop-filter: blur(14px) saturate(145%);
+}
+
+.system-media:hover::after,
+.system-media:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .system-card img {
   width: 100%;
   height: 178px;
   display: block;
   object-fit: cover;
   border-bottom: 1px solid rgba(185, 245, 232, 0.12);
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.system-media:hover img,
+.system-media:focus-visible img {
+  transform: scale(1.035);
+  filter: saturate(1.08) contrast(1.05);
 }
 
 .system-card span,
@@ -729,6 +770,7 @@ p {
   height: 40px;
   border-radius: 999px;
   background:
+    url("./assets/synththinking-emblem.png") center / 70% no-repeat,
     radial-gradient(circle at 42% 36%, #f8fbff 0 8%, transparent 9%),
     radial-gradient(circle at 63% 62%, #63d7c6 0 10%, transparent 11%),
     linear-gradient(135deg, #06121e, #0b3042);
@@ -763,20 +805,22 @@ p {
   position: absolute;
   right: 0;
   bottom: 0;
-  width: min(440px, calc(100vw - 32px));
-  max-height: min(720px, calc(100vh - 48px));
+  width: min(390px, calc(100vw - 32px));
+  max-height: min(680px, calc(100vh - 48px));
   display: grid;
-  grid-template-rows: auto auto auto minmax(150px, 1fr) auto;
-  gap: 14px;
-  border: 1px solid rgba(185, 245, 232, 0.18);
+  grid-template-rows: auto auto auto minmax(132px, 1fr) auto;
+  gap: 12px;
+  isolation: isolate;
+  border: 1px solid rgba(185, 245, 232, 0.24);
   border-radius: 24px;
-  padding: 18px;
+  padding: 16px;
   background:
-    radial-gradient(circle at 12% 0%, rgba(99, 215, 198, 0.2), transparent 34%),
-    radial-gradient(circle at 92% 12%, rgba(96, 165, 250, 0.12), transparent 30%),
-    linear-gradient(180deg, rgba(13, 28, 48, 0.78), rgba(5, 13, 25, 0.88));
+    radial-gradient(circle at 12% 0%, rgba(99, 215, 198, 0.18), transparent 34%),
+    radial-gradient(circle at 92% 12%, rgba(96, 165, 250, 0.1), transparent 30%),
+    linear-gradient(180deg, rgba(13, 28, 48, 0.96), rgba(5, 13, 25, 0.98));
   box-shadow:
-    0 30px 100px rgba(0, 0, 0, 0.66),
+    0 30px 100px rgba(0, 0, 0, 0.74),
+    0 0 0 1px rgba(255, 255, 255, 0.035),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(26px) saturate(150%);
   -webkit-backdrop-filter: blur(26px) saturate(150%);
@@ -791,7 +835,7 @@ p {
   border-radius: inherit;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 28%),
-    rgba(8, 17, 31, 0.72);
+    rgba(8, 17, 31, 0.86);
 }
 
 .chat-panel::after {
@@ -800,7 +844,7 @@ p {
   inset: 1px;
   z-index: -1;
   border-radius: 23px;
-  background: rgba(3, 10, 20, 0.55);
+  background: rgba(3, 10, 20, 0.78);
 }
 
 .chat-panel[hidden] {
@@ -816,8 +860,8 @@ p {
 }
 
 .chat-agent-mark {
-  width: 48px;
-  height: 48px;
+  width: 112px;
+  height: 54px;
   display: grid;
   place-items: center;
   border: 1px solid rgba(185, 245, 232, 0.28);
@@ -829,6 +873,13 @@ p {
   color: #b9f5e8;
   font-size: 13px;
   font-weight: 950;
+}
+
+.chat-agent-mark img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
 }
 
 .chat-panel-head strong {
@@ -888,7 +939,7 @@ p {
   border: 1px solid rgba(185, 245, 232, 0.1);
   border-radius: 18px;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(3, 10, 20, 0.36);
 }
 
 .starter-prompts > span {
@@ -934,12 +985,13 @@ p {
   display: grid;
   align-content: start;
   gap: 10px;
-  min-height: 180px;
+  min-height: 146px;
+  max-height: 220px;
   overflow-y: auto;
   border: 1px solid rgba(148, 163, 184, 0.11);
   border-radius: 18px;
   padding: 10px;
-  background: rgba(2, 8, 18, 0.28);
+  background: rgba(2, 8, 18, 0.48);
   scrollbar-color: rgba(99, 215, 198, 0.5) transparent;
 }
 
@@ -1801,20 +1853,27 @@ p {
     right: 12px;
     bottom: 12px;
     left: auto;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+    pointer-events: none;
   }
 
   .chat-fab {
     width: auto;
     max-width: calc(100vw - 24px);
     justify-content: center;
+    pointer-events: auto;
   }
 
   .chat-panel {
-    right: 0;
-    left: 0;
-    width: 100%;
-    bottom: 0;
-    max-height: calc(100dvh - 24px);
+    position: fixed;
+    right: 12px;
+    left: auto;
+    bottom: 12px;
+    width: min(390px, calc(100vw - 24px));
+    max-height: min(78dvh, 640px);
+    pointer-events: auto;
   }
 }
 
@@ -1852,8 +1911,10 @@ p {
   }
 
   .chat-panel {
-    padding: 14px;
-    grid-template-rows: auto auto auto minmax(120px, 1fr) auto;
+    gap: 10px;
+    border-radius: 22px 22px 18px 18px;
+    padding: 12px;
+    grid-template-rows: auto auto auto minmax(128px, 1fr) auto;
   }
 
   .chat-panel-head p {
@@ -1861,11 +1922,36 @@ p {
   }
 
   .chat-messages {
-    min-height: 130px;
+    min-height: 120px;
+    max-height: 24dvh;
   }
 
   .chat-panel-head {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 92px 1fr auto;
+    align-items: center;
+  }
+
+  .chat-agent-mark {
+    width: 86px;
+    height: 48px;
+    border-radius: 14px;
+  }
+
+  .starter-prompts {
+    gap: 7px;
+    padding: 8px;
+  }
+
+  .starter-prompts button {
+    padding: 9px 32px 9px 10px;
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .chat-message {
+    max-width: 96%;
+    padding: 10px 12px;
+    font-size: 13px;
   }
 
   .chat-input-shell {

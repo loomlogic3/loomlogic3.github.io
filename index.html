@@ -8,13 +8,12 @@
       name="description"
       content="SynthThinkingSystems builds professional websites, automation dashboards, creative platforms, and safety-first Web3 system tools."
     />
-    <link rel="stylesheet" href="./styles.css?v=20260524-assets" />
+    <link rel="stylesheet" href="./styles.css?v=20260525-card-assets" />
   </head>
   <body>
     <header class="site-header">
       <a class="brand-lockup" href="#top" aria-label="SynthThinkingSystems home">
-        <img src="./assets/synththinking-emblem.png" alt="SynthThinkingSystems logo" />
-        <span>SynthThinkingSystems</span>
+        <img src="./assets/synththinking-logo-full.png" alt="SynthThinkingSystems" />
       </a>
       <nav aria-label="Primary navigation">
         <a href="#services">Services</a>
@@ -79,7 +78,15 @@
 
         <div class="systems-grid">
           <article class="system-card accent-art">
-            <img src="./assets/indigoarthub-thumbnail.png" alt="IndigoArtHub creative platform thumbnail" />
+            <a
+              class="system-media"
+              href="https://indigoarthub.web.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open IndigoArtHub in a new tab"
+            >
+              <img src="./assets/indigoarthub-adire-card.png" alt="Adire textile detail for IndigoArtHub creative platform" />
+            </a>
             <span>Creative Platform</span>
             <h3>IndigoArtHub</h3>
             <p>
@@ -97,18 +104,22 @@
           </article>
 
           <article class="system-card accent-legacy">
-            <img src="./assets/synthquantengine-architecture.png" alt="SynthQuantEngine system architecture mockup" />
-            <span>Web3 Trading System</span>
+            <a class="system-media" href="#trust" aria-label="Read the SynthQuantEngine safety and trust notes">
+              <img src="./assets/synthquant-terminal-card.jpg" alt="Read-only market monitoring interface visual for SynthQuantEngine Legacy" />
+            </a>
+            <span>Read-Only Market Research</span>
             <h3>SynthQuantEngine Legacy</h3>
             <p>
-              The earlier trading-system lane used for learning, monitoring, and operational history.
-              It remains a private research and operations lane that informs SynthQuantEngine without
-              being mixed into client-facing promises.
+              A terminal-style monitoring lane used for research, read-only analysis, and operational
+              history. It informs SynthQuantEngine without being mixed into client-facing promises,
+              financial advice, or live execution.
             </p>
           </article>
 
           <article class="system-card accent-v2">
-            <img src="./assets/synthquantengine-thumbnail.png" alt="SynthQuantEngine control plane overview mockup" />
+            <a class="system-media" href="#trust" aria-label="Read the SynthQuantEngine safety and trust notes">
+              <img src="./assets/synthquantengine-thumbnail.png" alt="SynthQuantEngine control plane overview mockup" />
+            </a>
             <span>Safety-First Control Plane</span>
             <h3>SynthQuantEngine</h3>
             <p>
@@ -304,7 +315,9 @@
 
       <div class="chat-panel" data-chat-panel hidden>
         <div class="chat-panel-head">
-          <div class="chat-agent-mark" aria-hidden="true">ST</div>
+          <div class="chat-agent-mark" aria-hidden="true">
+            <img src="./assets/synththinking-logo-full.png" alt="" />
+          </div>
           <div>
             <span class="eyebrow">Public Assistant</span>
             <strong>SynthThinking AI</strong>
@@ -349,6 +362,6 @@
       </div>
     </section>
 
-    <script src="./script.js?v=20260524-assets" defer></script>
+    <script src="./script.js?v=20260525-card-assets" defer></script>
   </body>
 </html>
