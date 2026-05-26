@@ -30,6 +30,8 @@ const setChatOpen = (open) => {
   chatToggle.setAttribute('aria-expanded', String(open));
   if (open) {
     chatTextarea.focus();
+  } else {
+    chatToggle.focus();
   }
 };
 
@@ -72,6 +74,17 @@ chatToggle.addEventListener('click', () => {
 });
 
 chatClose.addEventListener('click', () => {
+  setChatOpen(false);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !chatPanel.hidden) {
+    setChatOpen(false);
+  }
+});
+
+document.addEventListener('pointerdown', (event) => {
+  if (chatPanel.hidden || chatWidget.contains(event.target)) return;
   setChatOpen(false);
 });
 
