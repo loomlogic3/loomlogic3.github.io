@@ -254,7 +254,7 @@ p {
   display: grid;
   gap: 18px;
   margin-top: 34px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .system-card,
@@ -276,6 +276,10 @@ p {
 .system-card {
   overflow: hidden;
   padding: 0;
+}
+
+.accent-pos {
+  border-color: rgba(99, 215, 198, 0.24);
 }
 
 .system-media {

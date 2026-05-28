@@ -1,0 +1,77 @@
+<svg width="1168" height="784" viewBox="0 0 1168 784" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(196 112) rotate(43) scale(474 316)">
+      <stop stop-color="#63D7C6" stop-opacity=".36"/>
+      <stop offset="1" stop-color="#050B15" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(984 630) rotate(-137) scale(500 330)">
+      <stop stop-color="#7C3AED" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#050B15" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1168" y2="784" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101B2D"/>
+      <stop offset="1" stop-color="#060C18"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="229" y1="621" x2="850" y2="621" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#63D7C6"/>
+      <stop offset=".52" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="30" stdDeviation="40" flood-color="#000814" flood-opacity=".55"/>
+    </filter>
+  </defs>
+  <rect width="1168" height="784" rx="34" fill="#050B15"/>
+  <rect width="1168" height="784" rx="34" fill="url(#glowA)"/>
+  <rect width="1168" height="784" rx="34" fill="url(#glowB)"/>
+  <g opacity=".42">
+    <path d="M92 662C218 570 329 740 484 638C628 543 717 623 820 528C927 430 1010 475 1087 405" stroke="#63D7C6" stroke-opacity=".28"/>
+    <path d="M72 701C232 590 345 756 489 681C657 594 746 646 878 552C979 480 1037 505 1118 446" stroke="#7C3AED" stroke-opacity=".28"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="92" y="86" width="984" height="604" rx="30" fill="url(#panel)" stroke="#B9F5E8" stroke-opacity=".18"/>
+    <rect x="116" y="112" width="250" height="552" rx="24" fill="#F8FAFC"/>
+    <rect x="136" y="140" width="210" height="60" rx="14" fill="#F1F5F9"/>
+    <circle cx="163" cy="170" r="14" fill="#63D7C6"/>
+    <circle cx="187" cy="170" r="14" fill="#2563EB"/>
+    <circle cx="211" cy="170" r="14" fill="#7C3AED"/>
+    <text x="136" y="239" fill="#4F46E5" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="4">POINT OF SALE</text>
+    <rect x="136" y="274" width="210" height="52" rx="16" fill="#FFFFFF" stroke="#CBD5E1"/>
+    <text x="158" y="307" fill="#94A3B8" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="600">Search products...</text>
+    <g font-family="Inter, Arial, sans-serif">
+      <rect x="136" y="358" width="210" height="82" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="158" y="390" fill="#0F172A" font-size="19" font-weight="800">Rice (5kg)</text>
+      <text x="158" y="416" fill="#64748B" font-size="15" font-weight="600">Food</text>
+      <text x="276" y="390" fill="#0F172A" font-size="18" font-weight="900">₦8500</text>
+      <rect x="136" y="458" width="210" height="82" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="158" y="490" fill="#0F172A" font-size="19" font-weight="800">Chicken</text>
+      <text x="158" y="516" fill="#64748B" font-size="15" font-weight="600">Protein</text>
+      <text x="276" y="490" fill="#0F172A" font-size="18" font-weight="900">₦4500</text>
+      <rect x="136" y="558" width="210" height="82" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+      <text x="158" y="590" fill="#0F172A" font-size="19" font-weight="800">Pure Water</text>
+      <text x="158" y="616" fill="#64748B" font-size="15" font-weight="600">Drinks</text>
+      <text x="286" y="590" fill="#0F172A" font-size="18" font-weight="900">₦800</text>
+    </g>
+    <rect x="390" y="112" width="662" height="552" rx="24" fill="#0A1220" stroke="#1E2F49"/>
+    <g font-family="Inter, Arial, sans-serif">
+      <text x="426" y="174" fill="#F8FAFC" font-size="34" font-weight="900">Synth POS</text>
+      <text x="426" y="207" fill="#94A3B8" font-size="18" font-weight="650">Retail checkout, inventory, and payment routing.</text>
+      <rect x="778" y="136" width="238" height="92" rx="22" fill="#0F1B2D" stroke="#2B4262"/>
+      <text x="806" y="174" fill="#94A3B8" font-size="16" font-weight="700">Order Total</text>
+      <text x="806" y="210" fill="#22C55E" font-size="34" font-weight="950">₦13,800</text>
+      <rect x="426" y="270" width="590" height="98" rx="22" fill="#F8FAFC"/>
+      <text x="456" y="316" fill="#0F172A" font-size="23" font-weight="850">Rice (5kg)</text>
+      <text x="456" y="345" fill="#64748B" font-size="17" font-weight="650">₦8500 × 1</text>
+      <text x="898" y="329" fill="#0F172A" font-size="25" font-weight="950">₦8500</text>
+      <rect x="426" y="390" width="590" height="98" rx="22" fill="#F8FAFC"/>
+      <text x="456" y="436" fill="#0F172A" font-size="23" font-weight="850">Chicken (1kg)</text>
+      <text x="456" y="465" fill="#64748B" font-size="17" font-weight="650">₦4500 × 1</text>
+      <text x="898" y="449" fill="#0F172A" font-size="25" font-weight="950">₦4500</text>
+      <rect x="426" y="534" width="280" height="78" rx="22" fill="#092E2F" stroke="#10B981" stroke-opacity=".7"/>
+      <text x="456" y="581" fill="#B9F5E8" font-size="22" font-weight="900">Paystack</text>
+      <rect x="736" y="534" width="280" height="78" rx="22" fill="#21153D" stroke="#7C3AED" stroke-opacity=".75"/>
+      <text x="766" y="581" fill="#E9D5FF" font-size="22" font-weight="900">Solana QR</text>
+    </g>
+    <rect x="426" y="632" width="590" height="8" rx="4" fill="url(#accent)"/>
+  </g>
+</svg>
