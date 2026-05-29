@@ -58,17 +58,24 @@ button {
 .brand-lockup {
   display: flex;
   align-items: center;
-  width: clamp(190px, 22vw, 260px);
+  gap: 12px;
+  width: auto;
   min-width: 0;
   font-weight: 800;
 }
 
 .brand-lockup img {
-  width: 100%;
-  height: 52px;
+  width: 46px;
+  height: 46px;
   border-radius: 0;
   object-fit: contain;
-  object-position: left center;
+}
+
+.brand-lockup span {
+  color: #f8fbff;
+  font-size: clamp(17px, 1.8vw, 22px);
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .site-header nav {
@@ -249,7 +256,13 @@ p {
   padding-top: clamp(44px, 6vw, 72px);
 }
 
-.systems-grid,
+.systems-grid {
+  display: grid;
+  gap: 18px;
+  margin-top: 34px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .trust-grid {
   display: grid;
   gap: 18px;
@@ -1876,7 +1889,7 @@ p {
   .chat-widget {
     right: 12px;
     bottom: 12px;
-    left: auto;
+    left: 12px;
     display: flex;
     justify-content: flex-end;
     padding: 0;
@@ -1892,10 +1905,10 @@ p {
 
   .chat-panel {
     position: fixed;
-    right: 12px;
-    left: auto;
+    right: 0;
+    left: 0;
     bottom: 12px;
-    width: min(380px, calc(100vw - 24px));
+    width: auto;
     max-height: min(560px, calc(100dvh - 24px));
     pointer-events: auto;
   }
@@ -1940,6 +1953,11 @@ p {
     padding: 12px;
     grid-template-rows: auto auto auto minmax(110px, 1fr) auto;
     max-height: min(540px, calc(100dvh - 24px));
+  }
+
+  .brand-lockup img {
+    width: 42px;
+    height: 42px;
   }
 
   .chat-panel-head p {
